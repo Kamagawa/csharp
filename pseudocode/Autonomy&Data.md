@@ -1,9 +1,9 @@
-Autonomy
--the machine will automatically sharpens the pencil and sort the pencil
--the machine will automatically start upon pencil detected
--the machine will stop upon user interfered with terminal button 
--the machine will have an emmergency stop function to protect the user
--the sharpener will not run if there are no pencils in the cartridge
+Autonomy  
+  - the machine will automatically sharpens the pencil and sort the pencil
+  - the machine will automatically start upon pencil detected
+  - the machine will stop upon user interfered with terminal button 
+  - the machine will have an emmergency stop function to protect the user
+  - the sharpener will not run if there are no pencils in the cartridge
 
 Data log
 -touch sensor activated 	//pencil occupied or not
