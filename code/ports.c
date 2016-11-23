@@ -1,5 +1,5 @@
-#ifndef PORTS_H
-#define PORTS_H
+#ifndef PORTS_C
+#define PORTS_C
 
 #define WHEEL    motorA
 #define TRAY     motorB
