@@ -1,6 +1,6 @@
 Functions
 ====
-"Low-level" hardware functions
+"Low-level" hardware functions (all found in `controls.c`)
 ----
 1. `void spinWheels(int power, int ms = -1)`
     - Assigned to **Felix**
@@ -24,7 +24,7 @@ Functions
     - Assigned to **Felix**
     - Return sensor value of color sensor
 
-"High-level" task functions
+"High-level" task functions (all found in `actions.c`)
 ----
 1. `void zeroTray()`
     - Assigned to **Kenta**
@@ -73,12 +73,12 @@ Functions
 
 Miscellaneous functions
 ----
-1. `int getPressedBtn()`
+1. `int getPressedBtn()` (all found in `nxtToggleBtn.c`)` 
     - Assigned to **Feilan**
     - Description: Check each button and its change in state, then return the number of the button that was pressed
     - Testing:
       - Press each button individually and verify that the returned value equals the button's `nNxtButtonPressed` value
-2. `void sort(int ar[], int len, bool reverse = false)`
+2. `void sort(int ar[], int len, bool reverse = false)` (all found in `util.c`)
     - Assigned to **Feilan**
     - Description: Generic sorting algorithm
     - Testing: Sort arrays with varying range of values, degree of sorted-ness, and length, and check that each array is sorted properly within a reasonable number of
