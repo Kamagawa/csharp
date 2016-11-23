@@ -22,4 +22,12 @@ void sort(int ar[], int len, bool ascending = true) {
     }
 }
 
+// Returns the speed in counts per second for the motor specified by |motor|.
+// Time interval used in speed calculation specified by |tMs|.
+float getSpeed(tMotor motor, int tMs = 50) {
+    int d1 = nMotorEncoder[motor];
+    wait1Msec(tMs);
+    return (nMotorEncoder[motor] - d1) / (float) tMs;
+}
+
 #endif
