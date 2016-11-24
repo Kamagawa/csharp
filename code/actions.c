@@ -3,6 +3,27 @@
 
 #include "controls.c"
 #include "ports.c"
+#include "util.c"
+
+void promptStart() {
+	displayString(3, "Press centre btn");
+	displayString(4, "to start");
+	waitForBtnPress(3);
+}
+
+void displayEndScreen() {
+
+}
+
+bool feedPencil(int timeout = 5000) {
+	clearTimer(T1);
+	moveBelt(50);
+	// spinWheels(50);
+	while (!SensorValue[WHEEL_TOUCH] && time1[T1] < timeout);
+	moveBelt(0);
+	// spinWheels(0);
+	return time1[T1] < timeout;
+}
 
 bool sharpenPencil(int ms) {
 	// push pencil into sensor
