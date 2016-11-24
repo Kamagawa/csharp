@@ -39,12 +39,6 @@ task sharpenAndSort() {
 
 //}
 
-// display number of pencils of each category after sharpening
-// also includes option to sharpen more pencils
-bool displayEndScreen(int *histogram) {
-
-}
-
 task main() {
 	promptStart();
 	startTask(monitorTray);
