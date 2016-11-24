@@ -1,6 +1,9 @@
 #define TOUCH S1
 #define COLOR S2
 
+#define BELT motorA
+#define WHEEL motorB
+
 task main()
 {
 	bool btnDown[2] = {false, false};
@@ -24,11 +27,13 @@ task main()
 
 		// motor forward, backward, or off
 		if (nNxtButtonPressed == 1) {
-			motor[motorA] = motorPresets[i];
+			motor[WHEEL] = motorPresets[i];
+			motor[BELT] = -motorPresets[i];
 		} else if (nNxtButtonPressed == 2) {
-			motor[motorA] = -motorPresets[i];
+			motor[WHEEL] = -motorPresets[i];
+			motor[BELT] = motorPresets[i];
 		} else {
-			motor[motorA] = 0;
+			motor[WHEEL] = motor[BELT] = 0;
 		}
 
 		// check if touch down
