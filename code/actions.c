@@ -8,10 +8,10 @@
 void promptStart() {
 	displayString(3, "Press centre btn");
 	displayString(4, "to start");
-	waitForBtnPress(CENTER_BTN);
+	waitForBtnPress(3);
 }
 
-void displayEndScreen(int histogram[]) {
+void displayEndScreen(int *histogram) {
 	int colorOrder= 0;
 	string penColors[7] = {"invalid", "black: %d", ""} 
 	
