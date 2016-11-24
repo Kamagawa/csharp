@@ -51,7 +51,7 @@ int getPencilColor(){
 	int modeColorFreq = 0, modeColor = 0;
 	for (int i = 0; i < 7; i++){//finds colour sensed the most frequently
 		if (colorType[i] > modeColorFreq){
-			modeColorFreq = ColorType[i];
+			modeColorFreq = colorType[i];
 			modeColor = i;
 		}
 	}

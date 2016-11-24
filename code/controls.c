@@ -10,28 +10,13 @@ void init() {
     SensorType[TRAY_TOUCH] = sensorTouch;
 }
 
-bool moveBelt(int power) {
-    int distPcts = gearRadiusCM * 2 * PI /360;
-    int avgSpeed;
-    int tempEncoder;
-    
-    m1.setMotorPower (power);
-    m1.setMotorPower (power);
-    nMotorEncoder[motorB] = 0;
+void moveBelt(int power, int tMs) {
+    motor[BELT] = power;
+
     clearTimer(T1);
-    
-    while (distPcts * nMotorEncoder[motorB] < distance)
-    {
-        if (time (T1)>=100){
-            avgSpeed = nMotorEncoder[motorB];
-        }
-        //Emergency Stop right here.
-    }
+    while (time1[T1] < tMs) { }
 
-    m1.setMotorPower (0);
-    m1.setMotorPower (0);
-
-    return true;
+    motor[BELT] = 0;
 }
 
 #endif
