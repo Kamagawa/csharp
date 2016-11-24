@@ -1,6 +1,6 @@
 #include "actions.c"
 #include "controls.c"
-#include "nxtToggleBtn.c"
+#include "util.c"
 #include "ports.c"
 
 const int BATTERY_THRESHOLD = 9000;
@@ -16,20 +16,37 @@ task monitorTray() {
 }
 
 task sharpenAndSort() {
+	bool quit = false;
+	bool finishedSharpening = false;
 
+	do {
+		while (!finishedSharpening) {
+			if (feedPencil()) {	// pencil found
+
+			} else {	// no pencil / jam
+
+			}
+		}
+
+		quit = displayEndScreen();
+	} while (!quit);
+
+	stopAllTasks();
 }
 
 // display menu dialog to let user pick pencil sorting method before sharpening begins
-task pickSortingMethod() {
+//task pickSortingMethod() {
 
-}
+//}
 
 // display number of pencils of each category after sharpening
 // also includes option to sharpen more pencils
-task displayInventory() {
+void displayEndScreen() {
 
 }
 
 task main() {
-
+	promptStart();
+	startTask(monitorTray);
+	startTask(sharpenAndSort);
 }
