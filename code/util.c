@@ -41,9 +41,9 @@ float getSpeed(tMotor motor, int tMs = 50) {
 // pressed first.
 TButtons waitForBtnPress() {
 	TButtons btn;
-	while (nNxtButtonPressed == -1);
-	btn = nNxtButtonPressed;
-	while (nNxtButtonPressed == btn);
+	while (nNxtButtonPressed == -1){}
+		btn = nNxtButtonPressed;
+		while (nNxtButtonPressed == btn){}
 	return btn;
 }
 
