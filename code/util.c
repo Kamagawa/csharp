@@ -27,7 +27,7 @@ void sort(int ar[], int len, bool ascending = true) {
 float getSpeed(tMotor motor, int tMs = 50) {
 	int d1 = nMotorEncoder[motor];
 	wait1Msec(tMs);
-	return (nMotorEncoder[motor] - d1) / (float) tMs;
+	return (nMotorEncoder[motor] - d1) / (float) tMs * 1000;
 }
 
 #endif
