@@ -11,19 +11,52 @@ void promptStart() {
 	waitForBtnPress(3);
 }
 
-void displayEndScreen(int *histogram) {
-	int colorOrder= 0;
-	string penColors[7] = {"invalid", "black: %d", ""} 
+void displayEndScreen(int *histogram, colorOrder) {
+	
+	string penColors[7] = {"invalid", "black: %d", "blue: %d", 
+	"green: %d", "red: %d", "white: %d"};
+	 
 	
 	displayString(0, "You pencils lol:");
-	if (colorOrder == 0){ 
-		
+	if (colorOrder == 0){ 		
 		for (int i = i; i<7; i++){
 			displayString(i, penColors[i], histogram[i]);
 		}	
-	
+	} 
+	else 
+	{
+		string tbSorted [] = histogram;
+		if (colorOrder = 1){
+			sort (tbSorted, 7, colorOrder);
+		} else{
+			sort (tbSorted, 7, false);
+		}
+		
+		int afterOrder[7];
+		
+		for (int x = 0; x < 7; x ++){
+			for (int y = 0; y < 7; y ++){
+				if (histogram [x] = tbSorted[y]) 
+					afterOrder[x] = y;  
+			}
+		}
+		
+		for (int i = 0; i <7; i++){
+			displayString (i, penColors[afterOrder[i]], tbSorted[i])
+		}
+		 
 	}
 	
+	TButton a = waitForBtnPress();
+	
+	if (a == LEFT_BTN)
+		return true;
+	else if (a == CENTER_BIN)
+		return false;
+	else if (a == RIGHT_BIN)
+		return displayEndScreen(histogram, colorOrder%3);
+	else 
+		return displayEndScreen (histogram, colorOrder%3);
 	
 	
 	
