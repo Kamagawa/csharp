@@ -4,19 +4,19 @@
 #include "ports.c"
 
 void init() {
-    SensorType[WHEEL_TOUCH] = sensorTouch;
-    SensorType[COLOR] = sensorColorNxtFULL;
-    SensorType[ULTRA] = sensorSONAR;
-    SensorType[TRAY_TOUCH] = sensorTouch;
+	SensorType[WHEEL_TOUCH] = sensorTouch;
+	SensorType[COLOR] = sensorColorNxtFULL;
+	SensorType[ULTRA] = sensorSONAR;
+	SensorType[TRAY_TOUCH] = sensorTouch;
 }
 
 void moveBelt(int power, int tMs) {
-    motor[BELT] = power;
+	motor[BELT] = power;
 
-    clearTimer(T1);
-    while (time1[T1] < tMs) { }
+	clearTimer(T1);
+	while (time1[T1] < tMs) { }
 
-    motor[BELT] = 0;
+	motor[BELT] = 0;
 }
 
 #endif
