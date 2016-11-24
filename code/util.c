@@ -31,3 +31,34 @@ float getSpeed(tMotor motor, int tMs = 50) {
 }
 
 #endif
+
+// Waits for any NXT button to be pressed, then returns that button's number after the button is released.
+// If multiple buttons are pressed simultaneously, the function will return the number of the button which
+// pressed first.
+TButtons waitForBtnPress() {
+	TButtons btn;
+	while (nNxtButtonPressed == -1);
+	btn = nNxtButtonPressed;
+	while (nNxtButtonPressed == btn);
+	return btn;
+}
+
+// Waits for a specific NXT button to be pressed, with an option for a timeout if the press never occurs.
+// By default, there is no timeout and the function will wait indefinitely for the button to be pressed.
+// If this timeout expires, or if there is no timeout, the function will return |true|.
+bool waitForBtnPress(TButton btn, int timeoutMs = -1) {
+	bool pressed;
+
+	if (timeoutMs == -1) {
+		while (nNxtButtonPressed == -1);
+		while (nNxtButtonPressed == btn);
+		pressed = true;
+	} else {
+		clearTimer(T1);
+		while (nNxtButtonPressed == -1 && time1[T1] < timeoutMs);
+		while (nNxtButtonPressed == btn && time1[T1] < timeoutMs);
+		pressed = time1[T1] < timeoutMs);
+	}
+
+	return pressed;
+}
