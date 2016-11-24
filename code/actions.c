@@ -11,8 +11,8 @@ void promptStart() {
 	waitForBtnPress(3);
 }
 
-void displayEndScreen() {
-
+void displayEndScreen(int histogram[]) {
+	
 }
 
 bool feedPencil(int timeout = 5000) {
