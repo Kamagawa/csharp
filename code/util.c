@@ -1,6 +1,10 @@
 #ifndef UTIL_C
 #define UTIL_C
 
+const TButtons LEFT_BTN = 2;
+const TButtons RIGHT_BTN = 1;
+const TButtons CENTER_BTN = 3;
+
 void swap(int * const a, int * const b) {
 	int temp = *a;
 	*a = *b;

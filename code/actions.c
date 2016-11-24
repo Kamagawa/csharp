@@ -8,7 +8,7 @@
 void promptStart() {
 	displayString(3, "Press centre btn");
 	displayString(4, "to start");
-	waitForBtnPress(3);
+	waitForBtnPress(CENTER_BTN);
 }
 
 void displayEndScreen(int histogram[]) {
