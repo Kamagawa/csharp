@@ -10,13 +10,14 @@ void init() {
 	SensorType[TRAY_TOUCH] = sensorTouch;
 }
 
-void moveBelt(int power, int tMs) {
+void moveBelt(int power, int tMs = -1) {
 	motor[BELT] = power;
 
-	clearTimer(T1);
-	while (time1[T1] < tMs) { }
-
-	motor[BELT] = 0;
+	if (tMs > -1) {
+		clearTimer(T1);
+		while (time1[T1] < tMs) { }
+		motor[BELT] = 0;
+	}
 }
 
 #endif
