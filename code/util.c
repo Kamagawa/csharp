@@ -8,7 +8,7 @@ void swap(int * const a, int * const b) {
 }
 
 // insertion sort, chosen for small input size
-void sort(int ar[], int len, bool ascending = true) {
+void sort(int *ar, int len, bool ascending = true) {
 	int i, j, k;
 
 	for (i = 1; i < len; i++) {
@@ -46,7 +46,7 @@ TButtons waitForBtnPress() {
 // Waits for a specific NXT button to be pressed, with an option for a timeout if the press never occurs.
 // By default, there is no timeout and the function will wait indefinitely for the button to be pressed.
 // If this timeout expires, or if there is no timeout, the function will return |true|.
-bool waitForBtnPress(TButton btn, int timeoutMs = -1) {
+bool waitForBtnPress(TButtons btn, int timeoutMs = -1) {
 	bool pressed;
 
 	if (timeoutMs == -1) {
@@ -57,7 +57,7 @@ bool waitForBtnPress(TButton btn, int timeoutMs = -1) {
 		clearTimer(T1);
 		while (nNxtButtonPressed == -1 && time1[T1] < timeoutMs);
 		while (nNxtButtonPressed == btn && time1[T1] < timeoutMs);
-		pressed = time1[T1] < timeoutMs);
+		pressed = time1[T1] < timeoutMs;
 	}
 
 	return pressed;
