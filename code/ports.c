@@ -1,13 +1,13 @@
 #ifndef PORTS_C
 #define PORTS_C
 
-#define WHEEL	motorA
-#define TRAY	motorB
-#define BELT	motorC
+const tMotor WHEEL = motorA;
+const tMotor TRAY = motorB;
+const tMotor BELT = motorC;
 
-#define WHEEL_TOUCH	S1
-#define COLOR				S2
-#define ULTRA				S3
-#define TRAY_TOUCH	S4
+const tSensors WHEEL_TOUCH = S1;
+const tSensors TRAY_TOUCH = S2;
+const tSensors ULTRA = S3;
+const tSensors COLOR = S4;
 
 #endif
