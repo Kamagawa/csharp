@@ -8,9 +8,17 @@ const int TRAY_DIST_CM = 30;
 
 // check that the pencil tray is not removed during sharpening
 task monitorTray() {
-	while (nAvgBatteryLevel < BATTERY_THRESHOLD) {
+	while (nAvgBatteryLevel > BATTERY_THRESHOLD) {
 		if (SensorValue[ULTRA] > TRAY_DIST_CM) {
-			// tray lifted during sharpening
+			playSound(soundException);
+			displayString(3, "Tray removed!");
+			displayString(4, "Put back to resume");
+			displayString(5, "sharpening.");
+
+			// pause all program execution until tray replaced
+			hogCPU();
+			while (SensorValue[ULTRA] > TRAY_DIST_CM) { }
+			releaseCPU();
 		}
 	}
 }
