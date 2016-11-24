@@ -24,6 +24,38 @@ bool sharpenPencil(int ms) {
 	return true;
 }
 
+void zeroTray(){
+	while(!SensorValue[TRAY_TOUCH]){
+		motor[TRAY] = 75;//change as needed
+	}
+}
 
+void ejectPencil(){
+	motor[WHEEL] = 100;
+	while(!SensorValue[WHEEL_TOUCH]){}
+	while(SensorValue[WHEEL_TOUCH]){}
+
+	nMotorEncoder[WHEEL] = 0;
+	while(nMotorEncoder[WHEEL] < 500){}//change as needed
+	motor[WHEEL] = 0;
+}
+
+int getPencilColor(){
+	clearTimer(T1);
+	int count = 0;
+	int colorType[7] = { 0, 0, 0, 0, 0, 0, 0 };
+	while(time1[T1] < 1000 && count++ < 1000){//get average colour seen
+		colorType[SensorValue[COLOR]]++;
+	}
+
+	int modeColorFreq = 0, modeColor = 0;
+	for (int i = 0; i < 7; i++){//finds colour sensed the most frequently
+		if (colorType[i] > modeColorFreq){
+			modeColorFreq = ColorType[i];
+			modeColor = i;
+		}
+	}
+	return modeColor;
+}
 
 #endif
