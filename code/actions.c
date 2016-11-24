@@ -12,6 +12,21 @@ void promptStart() {
 }
 
 void displayEndScreen(int histogram[]) {
+	int colorOrder= 0;
+	string penColors[7] = {"invalid", "black: %d", ""} 
+	
+	displayString(0, "You pencils lol:");
+	if (colorOrder == 0){ 
+		
+		for (int i = i; i<7; i++){
+			displayString(i, penColors[i], histogram[i]);
+		}	
+	
+	}
+	
+	
+	
+	
 	
 }
 
