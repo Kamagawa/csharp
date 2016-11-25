@@ -76,7 +76,7 @@ bool feedPencil(int timeout = 5000) {
 
 	// get pencil into sharpening-ready position (i.e. right past touch sensor)
 	spinWheels(50);
-	t = time[T1];	
+	t = time1[T1];
 	while (!SensorValue[WHEEL_TOUCH] && time1[T1] - t < timeout) { }
 
 	if (time1[T1] - t < timeout) {
@@ -96,11 +96,11 @@ bool sharpenPencil(int tMs = 3000) {
 
 	// retract pencil from sharpener
 	spinWheels(-50);
-	t = time[T1];
-	while (SensorValue[WHEEL_TOUCH] && time1[T1] - t < timeout) { }
+	t = time1[T1];
+	while (SensorValue[WHEEL_TOUCH] && time1[T1] - t < tMs) { }
 	spinWheels(0);
 
-	return time1[T1] - t < timeout;
+	return time1[T1] - t < tMs;
 }
 
 void alignSharpener(){
@@ -121,11 +121,13 @@ bool ejectPencil(){
 	while(nMotorEncoder[WHEEL] < 500){}//change as needed
 
 	motor[WHEEL] = 0;
+
+	return true;
 }
 
 int getPencilColor(int tMs = 1000) {
 	long t;
-	
+
 	t = time1[T1];
 	int colorType[N_BINS] = { 0, 0, 0, 0, 0, 0, 0 };
 	while(time1[T1] - t < tMs){//get average colour seen
