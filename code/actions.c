@@ -71,52 +71,53 @@ bool displayEndScreen(int *histogram, int colorOrder) {
 
 // jammed: pencils stuck in cartridge
 // times out: pencil fallen off belt
-bool feedPencil(int timeout = 5000) {
-	long t;
+Status feedPencil(int timeout = 5000) {
+	// |moveBelt()|: get pencil to wheels
+	// |spinWheels()|: get pencil into sharpening-ready position (i.e. right past touch sensor)
+	if (moveBelt(50, 2000) && spinWheels(50)) {
+		long t = time1[T1];
+		while (!SensorValue[WHEEL_TOUCH] && time1[T1] - t < timeout) { }
 
-	// get pencil to wheels
-	moveBelt(50, 2000);
-
-	// get pencil into sharpening-ready position (i.e. right past touch sensor)
-	spinWheels(50);
-	t = time1[T1];
-	while (!SensorValue[WHEEL_TOUCH] && time1[T1] - t < timeout) { }
-
-	if (time1[T1] - t < timeout) {
-		spinWheels(50, 500);
-		return true;
+		if (time1[T1] - t < timeout) {
+			// align pencil body with colour sensor
+			return spinWheels(50, 500) ? SUCCESS : JAMMED;
+		} else {
+			spinWheels(0);
+			return TIMED_OUT;
+		}
 	} else {
-		return false;
+		return JAMMED;
 	}
 }
 
 // jammed: jam in cartridge
 // time out: pencil stuck in sharpener
-bool sharpenPencil(int tMs = 3000) {
-	long t;
+Status sharpenPencil(int sharpenDuration = 3000, int timeout = 5000) {
+	if (spinWheels(50, 1000)) { // push pencil into sharpener
+		long t;
+		wait1Msec(sharpenDuration);	// wait for pencil to be sharpened
 
-	// push pencil into sharpener, then wait for |tMs| milliseconds
-	spinWheels(50, 1000);
-	spinWheels(0, tMs);
+		spinWheels(-50); // retract pencil from sharpener
+		t = time1[T1];
+		while (SensorValue[WHEEL_TOUCH] && time1[T1] - t < timeout) { }
+		spinWheels(0);
 
-	// retract pencil from sharpener
-	spinWheels(-50);
-	t = time1[T1];
-	while (SensorValue[WHEEL_TOUCH] && time1[T1] - t < tMs) { }
-	spinWheels(0);
-
-	return time1[T1] - t < tMs;
+		return (time1[T1] - t < timeout) ? SUCCESS : TIMED_OUT;
+	} else {
+		return JAMMED;
+	}
 }
 
 // jammed: object in way
 // time out: derailed tray
-bool alignSharpener(){
+Status alignSharpener(int timeout = 7000){
 	if (moveTray(50)) {//change as needed
-		while(!SensorValue[TRAY_TOUCH]) { }
+		long t = time1[T1];
+		while(!SensorValue[TRAY_TOUCH] && time1[T1] - t < timeout) { }
 		moveTray(0);
-		return true;
+		return (time1[T1] - t < timeout) ? SUCCESS : TIMED_OUT;
 	} else {
-		return false;
+		return JAMMED;
 	}
 }
 
