@@ -70,7 +70,7 @@ bool displayEndScreen(int *histogram, int colorOrder) {
 }
 
 // jammed: pencils stuck in cartridge
-// times out: pencil fallen off belt
+// times out: no more pencils
 Status feedPencil(int timeout = 5000) {
 	// |moveBelt()|: get pencil to wheels
 	// |spinWheels()|: get pencil into sharpening-ready position (i.e. right past touch sensor)
