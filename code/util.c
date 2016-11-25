@@ -1,4 +1,5 @@
 #ifndef UTIL_C
+
 #define UTIL_C
 
 #define LEFT_BTN 2
@@ -58,10 +59,10 @@ bool waitForBtnPress(int btn, int timeoutMs = -1) {
 		while (nNxtButtonPressed == btn){}
 		pressed = true;
 	} else {
-		clearTimer(T1);
-		while (nNxtButtonPressed != btn && time1[T1] < timeoutMs){}
-		while (nNxtButtonPressed == btn && time1[T1] < timeoutMs){}
-		pressed = time1[T1] < timeoutMs;
+		long t = time1[T1];
+		while (nNxtButtonPressed != btn && time1[T1] - t < timeoutMs){}
+		while (nNxtButtonPressed == btn && time1[T1] - t < timeoutMs){}
+		pressed = time1[T1] - t < timeoutMs;
 	}
 
 	return pressed;
