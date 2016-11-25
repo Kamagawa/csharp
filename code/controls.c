@@ -46,6 +46,7 @@
 
 //include ports.c file
 #include "ports.c"
+#include "util.c"
 
 //define constants
 const float DIAM_CM = 3.7;
@@ -53,6 +54,7 @@ const float CIRCUM_CM = DIAM_CM * PI;
 const int ENC_TOL = 1
 const int N_BINS = 7;
 const int BIN_DIST = 0;
+const int JAM_THRESHOLD = 10;
 
 
 /**
@@ -97,16 +99,25 @@ void init() {
  * system operation, thus it requires little var from outside
  * environment as it has been handled in lower-level functions
  *
- * @return a void task do not return anything.
+ * @return a bool that indicates if task has been done
 */
-void moveBelt(int power, int tMs = -1) {
-	motor[BELT] = power;
 
-	if (tMs > -1) {
+bool moveBelt(int power, int tMs = -1) {
+	bool success;
+
+
+	motor[BELT] = power;
+	success = getSpeed(BELT, 10) > JAM_THRESHOLD || power != 0;
+
+	if (tMs > -1 && success) {
 		long t = time1[T1];
 		while (time1[T1] - t < tMs) { }
 		motor[BELT] = 0;
+	} else if (!success) {
+		motor[BELT] = 0;
 	}
+
+	return success;
 }
 
 
@@ -128,18 +139,27 @@ void moveBelt(int power, int tMs = -1) {
  * system operation, thus it requires little var from outside
  * environment as it has been handled in lower-level functions
  *
- * @return a void task do not return anything.
+ * @return a bool to indicate if task has been done
 */
-void spinWheels (int power, int tMs = -1)
-{
-	motor[WHEEL] = power;
 
-	if (tMs > -1) {
+bool spinWheels (int power, int tMs = -1)
+{
+	bool success;
+
+	motor[WHEEL] = power;
+	success = getSpeed(BELT, 10) > JAM_THRESHOLD || power != 0;
+
+	if (tMs > -1 && success) {
 		long t = time1[T1];
 		while (time1[T1] - t < tMs) { }
 		motor[WHEEL] = 0;
+	} else if (!success) {
+		motor[WHEEL] = 0;
 	}
+
+	return success;
 }
+
 
 
 /**
@@ -160,17 +180,27 @@ void spinWheels (int power, int tMs = -1)
  * system operation, thus it requires little var from outside
  * environment as it has been handled in lower-level functions
  *
- * @return a void task do not return anything.
+ * @return a bool that indicates if task has been done.
 */
-void moveTray (int power, float distCm)
+
+bool moveTray (int power, float distCm = 0)
 {
-	int encVal = distCm / CIRCUM_CM * 360;
-	nMotorEncoder[TRAY] = 0;
+	bool success;
 
 	motor[TRAY] = power;
-	nMotorEncoderTarget[TRAY] = encVal;
-	while(nMotorRunState[TRAY] != runStateIdle) { }
-	motor[TRAY] = 0;
+	success = getSpeed(BELT, 10) > JAM_THRESHOLD || power != 0;
+
+	if (distCm > 0 && success) {
+		int encVal = distCm / CIRCUM_CM * 360;
+		nMotorEncoder[TRAY] = 0;
+		nMotorEncoderTarget[TRAY] = encVal;
+		while(nMotorRunState[TRAY] != runStateIdle) { }
+		motor[TRAY] = 0;
+	} else if (!success) {
+		motor[TRAY] = 0;
+	}
+
+	return success;
 }
 
 #endif
