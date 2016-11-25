@@ -20,10 +20,10 @@ bool displayEndScreen(int *histogram, int colorOrder) {
 	string penColors[N_BINS] = {"invalid", "black: %d", "blue: %d",
 	"green: %d", "yellow: %d", "red: %d", "white: %d", };
 
-	displayString(0, "Pencil inventory:");
+	displayString(0, "L Quit C Shrp R Sort");
 	if (colorOrder == 0){
 		for (int i = 0; i<N_BINS; i++){
-			displayString(i, penColors[i], histogram[i]);
+			displayString(i + 1, penColors[i], histogram[i]);
 		}
 	}
 	else
@@ -51,22 +51,24 @@ bool displayEndScreen(int *histogram, int colorOrder) {
 		}
 
 		for (int i = 0; i <N_BINS; i++){
-			long line = i;
-			displayString (line, penColors[afterOrder[i]], tbSorted[i]);
+			displayString (i + 1, penColors[afterOrder[i]], tbSorted[i]);
 		}
 
 	}
 
 	int a = waitForBtnPress();
 
-	if (a == LEFT_BTN)
+	if (a == LEFT_BTN) {
+		eraseDisplay();
 		return true;
-	else if (a == CENTER_BTN)
+	} else if (a == CENTER_BTN) {
+		eraseDisplay();
 		return false;
-	else if (a == RIGHT_BTN)
+	} else if (a == RIGHT_BTN) {
 		return displayEndScreen(histogram, colorOrder%3);
-	else
+	} else {
 		return displayEndScreen (histogram, colorOrder%3);
+	}
 }
 
 // jammed: pencils stuck in cartridge
