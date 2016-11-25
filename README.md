@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-AYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
-Eugene is HERE!!!
-Kenta too ayyy
-
-=======
->>>>>>> dev
 # csharp
 
 what's left
