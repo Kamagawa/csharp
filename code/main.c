@@ -119,10 +119,6 @@ task sharpenAndSort() {
 }
 
 
-
-
-
-
 // display menu dialog to let user pick pencil sorting method before sharpening begins
 //task pickSortingMethod() {
 
