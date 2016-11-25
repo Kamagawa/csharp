@@ -1,9 +1,9 @@
 #ifndef UTIL_C
 #define UTIL_C
 
-const TButtons LEFT_BTN = 2;
-const TButtons RIGHT_BTN = 1;
-const TButtons CENTER_BTN = 3;
+#define LEFT_BTN 2
+#define RIGHT_BTN 1
+#define CENTER_BTN 3
 
 void swap(int * const a, int * const b) {
 	int temp = *a;
@@ -39,8 +39,8 @@ float getSpeed(tMotor motor, int tMs = 50) {
 // Waits for any NXT button to be pressed, then returns that button's number after the button is released.
 // If multiple buttons are pressed simultaneously, the function will return the number of the button which
 // pressed first.
-TButtons waitForBtnPress() {
-	TButtons btn;
+int waitForBtnPress() {
+	int btn;
 	while (nNxtButtonPressed == -1){}
 		btn = nNxtButtonPressed;
 		while (nNxtButtonPressed == btn){}
@@ -50,7 +50,7 @@ TButtons waitForBtnPress() {
 // Waits for a specific NXT button to be pressed, with an option for a timeout if the press never occurs.
 // By default, there is no timeout and the function will wait indefinitely for the button to be pressed.
 // If this timeout expires, or if there is no timeout, the function will return |true|.
-bool waitForBtnPress(TButtons btn, int timeoutMs = -1) {
+bool waitForBtnPress(int btn, int timeoutMs = -1) {
 	bool pressed;
 
 	if (timeoutMs == -1) {

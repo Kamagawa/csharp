@@ -55,7 +55,7 @@ bool displayEndScreen(int *histogram, int colorOrder) {
 
 	}
 
-	TButtons a = waitForBtnPress();
+	int a = waitForBtnPress();
 
 	if (a == LEFT_BTN)
 		return true;
