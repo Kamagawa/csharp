@@ -1,6 +1,10 @@
 # csharp
 
-- Hardware control functions (i.e. interfacing with motors and sensors) go in `control.c`
-- Functions that represent important actions (e.g. sharpening the pencil) go in `actions.c`
-- Port mappings go in `ports.c`
-- Special `task` functions go in `main.c`
+what's left
+---
+- [ ] implement error handling in main.c
+- [ ] test control.c functions individually
+- [ ] test actions.c functions individually
+- [ ] test main.c tasks individually
+- [ ] implement felix's extra sorting options
+- [ ] syntax cleanup and get rid of magic nums, etc.
