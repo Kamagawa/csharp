@@ -4,6 +4,12 @@
 #define BELT motorA
 #define WHEEL motorB
 
+float getSpeed(tMotor motor, int tMs = 50) {
+	int d1 = nMotorEncoder[motor];
+	wait1Msec(tMs);
+	return (nMotorEncoder[motor] - d1) / (float) tMs * 1000;
+}
+
 task main()
 {
 	bool btnDown[2] = {false, false};
@@ -68,9 +74,11 @@ task main()
 		}
 
 		// output to screen
+		float speed = getSpeed(motorA);
 		eraseDisplay();
 		displayString(0, touch ? "down" : "up");
 		displayString(1, "color %s", color);
 		displayString(2, "motor %d", motorPresets[i]);
+		displayString(3, "%f", speed);
 	}
 }
