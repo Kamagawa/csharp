@@ -84,23 +84,31 @@ void promptStart() {
  * {code  bool displayEndScreen(); }
  *
  * Description:
- * display strings, and wait for user button press to start
- * the program
- *
+ * It handles the display of sorted contain in the program
+ * first it display a list of sorted pencil
+ * depending on users' requirement, sort the pencils in 
+ * different ways: assending, desecnding, and by color index
+ * 
+ * @param histogram int array pointer for the array to be sorted
+ * @param colorOrder for the order of which the pencil will be sorted 
  *
  * @return void: do not return anything.
 */
-bool displayEndScreen(int *histogram, int colorOrder) {
+bool displayEndScreen(int *histogram, int colorOrder) 
+{
+	
+	//color array
 	string penColors[N_BINS] = {"invalid", "black: %d", "blue: %d",
 	"green: %d", "yellow: %d", "red: %d", "white: %d", };
-
+	
+	//display first sorted list
 	displayString(0, "L Quit C Shrp R Sort");
 	if (colorOrder == 0){
 		for (int i = 0; i<N_BINS; i++){
 			displayString(i + 1, penColors[i], histogram[i]);
 		}
 	}
-	else
+	else		//switch to other options based on users' spec
 	{
 		int tbSorted [N_BINS];
 		int *P_tbSorted = &tbSorted;
@@ -118,7 +126,8 @@ bool displayEndScreen(int *histogram, int colorOrder) {
 		}
 
 		int afterOrder[N_BINS];
-
+		
+		//sort color and quantity
 		for (int x = 0; x < N_BINS; x ++){
 			for (int y = 0; y < N_BINS; y ++){
 				if (tbSorted[x] == histogram [y] && notTaken[y] )
@@ -126,15 +135,18 @@ bool displayEndScreen(int *histogram, int colorOrder) {
 					taken [y] = false;
 			}
 		}
-
+		
+		//display sorted result
 		for (int i = 0; i <N_BINS; i++){
 			displayString (i + 1, penColors[afterOrder[i]], tbSorted[i]);
 		}
 
 	}
 
+	//prompt user for input after each sort
 	int a = waitForBtnPress();
 
+	//decide the next task based on user input
 	if (a == LEFT_BTN) {
 		eraseDisplay();
 		return true;
