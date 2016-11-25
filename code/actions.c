@@ -16,15 +16,12 @@ void promptStart() {
 }
 
 bool displayEndScreen(int *histogram, int colorOrder) {
-
 	string penColors[N_BINS] = {"invalid", "black: %d", "blue: %d",
 	"green: %d", "yellow: %d", "red: %d", "white: %d", };
-
 
 	displayString(0, "Pencil inventory:");
 	if (colorOrder == 0){
 		for (int i = 0; i<N_BINS; i++){
-
 			displayString(i, penColors[i], histogram[i]);
 		}
 	}
@@ -81,9 +78,13 @@ bool feedPencil(int timeout = 5000) {
 	spinWheels(50);
 	t = time[T1];	
 	while (!SensorValue[WHEEL_TOUCH] && time1[T1] - t < timeout) { }
-	spinWheels(0);
 
-	return time1[T1] - t < timeout;
+	if (time1[T1] - t < timeout) {
+		spinWheels(50, 500);
+		return true;
+	} else {
+		return false;
+	}
 }
 
 bool sharpenPencil(int tMs = 3000) {
@@ -104,7 +105,7 @@ bool sharpenPencil(int tMs = 3000) {
 
 void alignSharpener(){
 	while(!SensorValue[TRAY_TOUCH]){
-		motor[TRAY] = 75;//change as needed
+		motor[TRAY] = 50;//change as needed
 	}
 }
 
@@ -143,5 +144,9 @@ int getPencilColor(int tMs = 1000) {
 }
 
 // implement |moveTrayToColor()|
+void moveTrayToColor(int color) {
+	alignSharpener();
+	moveTray(-50, (color + 1) * BIN_DIST);
+}
 
 #endif

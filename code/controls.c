@@ -3,10 +3,11 @@
 
 #include "ports.c"
 
-const float DIAM_CM = 3;
+const float DIAM_CM = 3.7;
 const float CIRCUM_CM = DIAM_CM * PI;
 const int ENC_TOL = 1
 const int N_BINS = 7;
+const int BIN_DIST = 0;
 
 void init() {
 	SensorType[WHEEL_TOUCH] = sensorTouch;
@@ -36,12 +37,9 @@ void spinWheels (int power, int tMs = -1)
 	}
 }
 
-void moveTray (int power, int distCm)
+void moveTray (int power, float distCm)
 {
-	if (distCm < 0)
-		power*= -1;
-
-	int encVal = distCM / CIRCUM_CM * 360;
+	int encVal = distCm / CIRCUM_CM * 360;
 	nMotorEncoder[TRAY] = 0;
 
 	motor[TRAY] = power;
