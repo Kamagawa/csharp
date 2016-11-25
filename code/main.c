@@ -29,14 +29,19 @@ task sharpenAndSort() {
 
 	do {
 		while (!finishedSharpening) {
-			if (feedPencil()) {	// pencil found
+			if (feedPencil()) // pencil found
+			{
 
-			} else {	// no pencil / jam
+			}
+			else // no pencil / jam
+			{
 
 			}
 		}
+		string histogram[7];
+		int *p_histogram = &histogram;
 
-		quit = displayEndScreen();
+		quit = displayEndScreen(p_histogram, 0);
 	} while (!quit);
 
 	stopAllTasks();
