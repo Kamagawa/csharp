@@ -13,14 +13,14 @@ typedef enum status_t { SUCCESS, JAMMED, TIMED_OUT } Status;
 void promptStart() {
 	displayString(3, "Press centre btn");
 	displayString(4, "to start");
-	waitForBtnPress(3);
+	waitForBtnPress(CENTER_BTN);
 }
 
 bool displayEndScreen(int *histogram, int colorOrder) {
-	string penColors[N_BINS] = {"invalid", "black: %d", "blue: %d",
-	"green: %d", "yellow: %d", "red: %d", "white: %d", };
+	string penColors[N_BINS] = {"invalid:%8d" , "black:  %8d", "blue:   %8d",
+	"green:  %8d", "yellow: %8d", "red:    %8d", "white:  %8d" };
 
-	displayString(0, "L Quit C Shrp R Sort");
+	displayString(0, "LQt,CShrp,RSrt");
 	if (colorOrder == 0){
 		for (int i = 0; i<N_BINS; i++){
 			displayString(i + 1, penColors[i], histogram[i]);
@@ -29,29 +29,32 @@ bool displayEndScreen(int *histogram, int colorOrder) {
 	else
 	{
 		int tbSorted [N_BINS];
-		int *P_tbSorted = &tbSorted;
+		string colors[N_BINS];
+		bool notTaken[N_BINS];
 
 		for (int u = 0; u < N_BINS ; u ++){
 			tbSorted[u] = histogram[u];
+			colors[u] = "";
+			notTaken[u] = true;
 		}
 
 		if (colorOrder == 1){
-			sort (P_tbSorted, N_BINS, colorOrder);
+			sort (tbSorted, N_BINS, true);
 		} else{
-			sort (P_tbSorted, N_BINS, false);
+			sort (tbSorted, N_BINS, false);
 		}
-
-		int afterOrder[N_BINS];
 
 		for (int x = 0; x < N_BINS; x ++){
 			for (int y = 0; y < N_BINS; y ++){
-				if (histogram [x] == tbSorted[y])
-					afterOrder[x] = y;
+				if (tbSorted[x] == histogram[y] && notTaken[x]) {
+					colors[x] = penColors[y];
+					notTaken[x] = false;
+				}
 			}
 		}
 
 		for (int i = 0; i <N_BINS; i++){
-			displayString (i + 1, penColors[afterOrder[i]], tbSorted[i]);
+			displayString (i + 1, colors[i], tbSorted[i]);
 		}
 
 	}
@@ -65,9 +68,9 @@ bool displayEndScreen(int *histogram, int colorOrder) {
 		eraseDisplay();
 		return false;
 	} else if (a == RIGHT_BTN) {
-		return displayEndScreen(histogram, colorOrder%3);
+		return displayEndScreen(histogram, (colorOrder + 1 ) % 3);
 	} else {
-		return displayEndScreen (histogram, colorOrder%3);
+		return displayEndScreen (histogram, (colorOrder + 1) % 3);
 	}
 }
 
@@ -97,7 +100,7 @@ Status feedPencil(int timeout = 5000) {
 Status sharpenPencil(int sharpenDuration = 3000, int timeout = 5000) {
 	if (spinWheels(50, 1000)) { // push pencil into sharpener
 		long t;
-		wait1Msec(sharpenDuration);	// wait for pencil to be sharpened
+		spinWheels(25, sharpenDuration); // wait for pencil to be sharpened
 
 		spinWheels(-50); // retract pencil from sharpener
 		t = time1[T1];
@@ -113,7 +116,7 @@ Status sharpenPencil(int sharpenDuration = 3000, int timeout = 5000) {
 // jammed: object in way
 // time out: derailed tray
 Status alignSharpener(int timeout = 7000){
-	if (moveTray(50)) {//change as needed
+	if (moveTray(25)) {
 		long t = time1[T1];
 		while(!SensorValue[TRAY_TOUCH] && time1[T1] - t < timeout) { }
 		moveTray(0);
@@ -170,7 +173,7 @@ int getPencilColor(int tMs = 1000) {
 Status moveTrayToColor(int color) {
        Status tempStatus = alignSharpener();
        if (tempStatus == SUCCESS){
-               if (moveTray(50, (color + 1) * BIN_DIST))
+               if (moveTray(25, (color + 1) * BIN_DIST))
                   return SUCCESS;
                else
                  	return JAMMED;
