@@ -1,29 +1,39 @@
 /**
 * <h1>actions.c</h1>
-* <p>The controls.c file is the control component of the Csharp program.
-* It contains the handles the control mechanism of the program </p>
+* <p>The actions.c file is the action component of the Csharp program.
+* It contains the handles the action mechanism of the program </p>
 *
-* <p> The function aims handle the control calls and responds within
-* the following files and contains these variables, and functions: </p>
+* <p> The function aims handle the moving pencils, sharpening pencil, 
+* ejecting pencils, and moving trays. Essentially, the basic component of
+* the machine, it includes these classes, variables, and functions: </p>
 *
-* <p><b>Includes: </b>ports.c</p>
+* <p><b>Includes: 
+* #ifndef ACTIONS_C
+* #define ACTIONS_C
+* 
+* #include "controls.c"
+* #include "ports.c"
+* #include "util.c" 
+* </p> 
 *
 * <p>
-* <b>constant variables:</b>
+* <b>defined Enum:</b>
 * {code
-* const float DIAM_CM = 3.7;
-* const float CIRCUM_CM = DIAM_CM * PI;
-* const int ENC_TOL = 1
-* const int N_BINS = 7;
-* const int BIN_DIST = 0;
+* typedef enum status_t { SUCCESS, JAMMED, TIMED_OUT } Status;
 * }
 * </p>
 *
 * <p>
 * <b>Funcions</b>
-* monitorTray()
-* sharpenAndSort()
-* task main()
+* void promptStart() 
+* bool displayEndScreen(int *histogram, int colorOrder) 
+* Status feedPencil(int timeout = 5000)
+* Status sharpenPencil(int sharpenDuration = 3000, int timeout = 5000)
+* Status alignSharpener(int timeout = 7000)
+* Status ejectPencil(int timeout = 7000)
+* Status moveTrayToColor(int color)
+* int getPencilColor(int tMs = 1000)
+* 
 * </p>
 *
 * <b>Note:</b> The program will only work when all the specified files,
