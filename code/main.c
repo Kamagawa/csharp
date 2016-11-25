@@ -25,23 +25,20 @@ task monitorTray() {
 
 task sharpenAndSort() {
 	bool quit = false;
-	bool finishedSharpening = false;
+	int color = 0;
+	int count[N_BINS] = { 0, 0, 0, 0, 0, 0, 0 };
 
 	do {
-		while (!finishedSharpening) {
-			if (feedPencil()) // pencil found
-			{
-
-			}
-			else // no pencil / jam
-			{
-
-			}
+		while (feedPencil()) {
+			alignSharpener();
+			color = getPencilColor();
+			count[color]++;
+			sharpenPencil();
+			// moveTrayToColor(color);
+			ejectPencil();
 		}
-		string histogram[7];
-		int *p_histogram = &histogram;
 
-		quit = displayEndScreen(p_histogram, 0);
+		quit = displayEndScreen(count, 0);
 	} while (!quit);
 
 	stopAllTasks();
@@ -53,6 +50,7 @@ task sharpenAndSort() {
 //}
 
 task main() {
+	init();
 	promptStart();
 	startTask(monitorTray);
 	startTask(sharpenAndSort);
