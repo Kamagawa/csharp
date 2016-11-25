@@ -8,6 +8,7 @@
 #include "ports.c"
 #include "util.c"
 
+typedef enum status_t { SUCCESS, JAMMED, TIMED_OUT } Status;
 
 void promptStart() {
 	displayString(3, "Press centre btn");
@@ -68,6 +69,8 @@ bool displayEndScreen(int *histogram, int colorOrder) {
 		return displayEndScreen (histogram, colorOrder%3);
 }
 
+// jammed: pencils stuck in cartridge
+// times out: pencil fallen off belt
 bool feedPencil(int timeout = 5000) {
 	long t;
 
@@ -87,6 +90,8 @@ bool feedPencil(int timeout = 5000) {
 	}
 }
 
+// jammed: jam in cartridge
+// time out: pencil stuck in sharpener
 bool sharpenPencil(int tMs = 3000) {
 	long t;
 
@@ -103,28 +108,38 @@ bool sharpenPencil(int tMs = 3000) {
 	return time1[T1] - t < tMs;
 }
 
-void alignSharpener(){
-	moveTray(50);//change as needed
-	while(!SensorValue[TRAY_TOUCH]) { }
-	moveTray(0);
+// jammed: object in way
+// time out: derailed tray
+bool alignSharpener(){
+	if (moveTray(50)) {//change as needed
+		while(!SensorValue[TRAY_TOUCH]) { }
+		moveTray(0);
+		return true;
+	} else {
+		return false;
+	}
 }
 
+// jammed: pencil stuck
+// time out: pencil hanging
 bool ejectPencil(){
-	motor[WHEEL] = 50;
+	if (spinWheels(50)) {
+		// pencil begins behind touch sensor
+		while(!SensorValue[WHEEL_TOUCH]){}
+		// keep pushing till pencil past touch sensor
+		while(SensorValue[WHEEL_TOUCH]){}
+		// push for an additional number of encoder counts in order to eject pencil
+		nMotorEncoder[WHEEL] = 0;
+		while(nMotorEncoder[WHEEL] < 500){}//change as needed
 
-	// pencil begins behind touch sensor
-	while(!SensorValue[WHEEL_TOUCH]){}
-	// keep pushing till pencil past touch sensor
-	while(SensorValue[WHEEL_TOUCH]){}
-	// push for an additional number of encoder counts in order to eject pencil
-	nMotorEncoder[WHEEL] = 0;
-	while(nMotorEncoder[WHEEL] < 500){}//change as needed
-
-	motor[WHEEL] = 0;
-
-	return true;
+		spinWheels(0);
+		return true;
+	} else {
+		return false;
+	}
 }
 
+// 0: invalid color
 int getPencilColor(int tMs = 1000) {
 	long t;
 
@@ -145,10 +160,10 @@ int getPencilColor(int tMs = 1000) {
 	return modeColor;
 }
 
-// implement |moveTrayToColor()|
-void moveTrayToColor(int color) {
-	alignSharpener();
-	moveTray(-50, (color + 1) * BIN_DIST);
+// jammed: object in way
+// time out: derailed tray
+bool moveTrayToColor(int color) {
+	return alignSharpener() && moveTray(-50, (color + 1) * BIN_DIST);
 }
 
 #endif
