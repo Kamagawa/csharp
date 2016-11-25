@@ -58,14 +58,38 @@
 #include "ports.c"
 #include "util.c"
 
-typedef enum status_t { SUCCESS, JAMMED, TIMED_OUT } Status;
+//enum status for functions to return starts datatype
+typedef enum status_t { SUCCESS, JAMMED, TIMED_OUT } Status; 
 
+/**
+ * monitorTray
+ * {code  void promptStart(); }
+ *
+ * Description:
+ * display strings, and wait for user button press to start
+ * the program
+ *
+ *
+ * @return void: do not return anything.
+*/
 void promptStart() {
 	displayString(3, "Press centre btn");
 	displayString(4, "to start");
 	waitForBtnPress(3);
 }
 
+
+/**
+ * displayEndScreen
+ * {code  bool displayEndScreen(); }
+ *
+ * Description:
+ * display strings, and wait for user button press to start
+ * the program
+ *
+ *
+ * @return void: do not return anything.
+*/
 bool displayEndScreen(int *histogram, int colorOrder) {
 	string penColors[N_BINS] = {"invalid", "black: %d", "blue: %d",
 	"green: %d", "yellow: %d", "red: %d", "white: %d", };
@@ -80,9 +104,11 @@ bool displayEndScreen(int *histogram, int colorOrder) {
 	{
 		int tbSorted [N_BINS];
 		int *P_tbSorted = &tbSorted;
+		int notTaken [N_BINS];
 
 		for (int u = 0; u < N_BINS ; u ++){
 			tbSorted[u] = histogram[u];
+			notTaken [N_BINS] = true;
 		}
 
 		if (colorOrder == 1){
@@ -95,8 +121,9 @@ bool displayEndScreen(int *histogram, int colorOrder) {
 
 		for (int x = 0; x < N_BINS; x ++){
 			for (int y = 0; y < N_BINS; y ++){
-				if (histogram [x] == tbSorted[y])
+				if (tbSorted[x] == histogram [y] && notTaken[y] )
 					afterOrder[x] = y;
+					taken [y] = false;
 			}
 		}
 
