@@ -206,10 +206,11 @@ Status feedPencil(int timeout = 5000)
  * @param timesout: time until it returns a timeOut status
  * @param sharpenPencil: duration for shapening the pencil
  *
- * @return jammed: pencils stuck in cartridge
+ * @return status
+ *		JAMMED: pencils stuck in cartridge
+ *		TIMED_OUT: pencils stuck in sharpener
+ *		SUCCESS: task completed
 */
-// jammed: jam in cartridge
-// time out: pencil stuck in sharpener
 Status sharpenPencil(int sharpenDuration = 3000, int timeout = 5000) {
 	if (spinWheels(50, 1000)) { // push pencil into sharpener
 		long t;
