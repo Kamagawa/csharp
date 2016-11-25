@@ -19,58 +19,58 @@ void init() {
 }
 
 bool moveBelt(int power, int tMs = -1) {
-	bool jammed;
+	bool success;
 
 	motor[BELT] = power;
-	jammed = getSpeed(BELT, 10) < JAM_THRESHOLD && power != 0;
+	success = getSpeed(BELT, 10) > JAM_THRESHOLD || power != 0;
 
-	if (tMs > -1 && !jammed) {
+	if (tMs > -1 && success) {
 		long t = time1[T1];
 		while (time1[T1] - t < tMs) { }
 		motor[BELT] = 0;
-	} else if (jammed) {
+	} else if (!success) {
 		motor[BELT] = 0;
 	}
 
-	return jammed;
+	return success;
 }
 
 bool spinWheels (int power, int tMs = -1)
 {
-	bool jammed;
+	bool success;
 
 	motor[WHEEL] = power;
-	jammed = getSpeed(BELT, 10) < JAM_THRESHOLD && power != 0;
+	success = getSpeed(BELT, 10) > JAM_THRESHOLD || power != 0;
 
-	if (tMs > -1 && !jammed) {
+	if (tMs > -1 && success) {
 		long t = time1[T1];
 		while (time1[T1] - t < tMs) { }
 		motor[WHEEL] = 0;
-	} else if (jammed) {
+	} else if (!success) {
 		motor[WHEEL] = 0;
 	}
 
-	return jammed;
+	return success;
 }
 
 bool moveTray (int power, float distCm = 0)
 {
-	bool jammed;
+	bool success;
 
 	motor[TRAY] = power;
-	jammed = getSpeed(BELT, 10) < JAM_THRESHOLD && power != 0;
+	success = getSpeed(BELT, 10) > JAM_THRESHOLD || power != 0;
 
-	if (distCm > 0 && !jammed) {
+	if (distCm > 0 && success) {
 		int encVal = distCm / CIRCUM_CM * 360;
 		nMotorEncoder[TRAY] = 0;
 		nMotorEncoderTarget[TRAY] = encVal;
 		while(nMotorRunState[TRAY] != runStateIdle) { }
 		motor[TRAY] = 0;
-	} else if (jammed) {
+	} else if (!success) {
 		motor[TRAY] = 0;
 	}
 
-	return jammed;
+	return success;
 }
 
 #endif
