@@ -92,7 +92,7 @@ void promptStart() {
  * @param histogram int array pointer for the array to be sorted
  * @param colorOrder for the order of which the pencil will be sorted 
  *
- * @return void: do not return anything.
+ * @return bool: whether or not the programme shall continue
 */
 bool displayEndScreen(int *histogram, int colorOrder) 
 {
@@ -120,9 +120,9 @@ bool displayEndScreen(int *histogram, int colorOrder)
 		}
 
 		if (colorOrder == 1){
-			sort (P_tbSorted, N_BINS, colorOrder);
+			sort (P_tbSorted, N_BINS, colorOrder);	//ascending order
 		} else{
-			sort (P_tbSorted, N_BINS, false);
+			sort (P_tbSorted, N_BINS, false);		//desending order
 		}
 
 		int afterOrder[N_BINS];
@@ -140,7 +140,6 @@ bool displayEndScreen(int *histogram, int colorOrder)
 		for (int i = 0; i <N_BINS; i++){
 			displayString (i + 1, penColors[afterOrder[i]], tbSorted[i]);
 		}
-
 	}
 
 	//prompt user for input after each sort
@@ -160,9 +159,22 @@ bool displayEndScreen(int *histogram, int colorOrder)
 	}
 }
 
-// jammed: pencils stuck in cartridge
-// times out: no more pencils
-Status feedPencil(int timeout = 5000) {
+
+/**
+ * feedPencil
+ * {code  Status feedPencil(); }
+ *
+ * Description:
+ * this function handls spinning wheels to feed the pencil into the sharpener
+ * it takes in a parameter times out to determine whether there are more pencils
+ * left in the bin
+ * 
+ * @param timesout: no more pencils
+ *
+ * @return jammed: pencils stuck in cartridge
+*/
+Status feedPencil(int timeout = 5000) 
+{
 	// |moveBelt()|: get pencil to wheels
 	// |spinWheels()|: get pencil into sharpening-ready position (i.e. right past touch sensor)
 	if (moveBelt(50, 2000) && spinWheels(50)) {
@@ -181,6 +193,21 @@ Status feedPencil(int timeout = 5000) {
 	}
 }
 
+
+/**
+ * sharpenPencil
+ * {code  Status sharpenPencil(); }
+ *
+ * Description:
+ * This function handles the sharpening action of pencils by
+ * having the wheels pushing the pencils into the sharpener, as well 
+ * as retracting it after it is finished.
+ * 
+ * @param timesout: time until it returns a timeOut status
+ * @param sharpenPencil: duration for shapening the pencil
+ *
+ * @return jammed: pencils stuck in cartridge
+*/
 // jammed: jam in cartridge
 // time out: pencil stuck in sharpener
 Status sharpenPencil(int sharpenDuration = 3000, int timeout = 5000) {
