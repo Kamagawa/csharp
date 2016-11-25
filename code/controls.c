@@ -37,15 +37,17 @@ void spinWheels (int power, int tMs = -1)
 	}
 }
 
-void moveTray (int power, float distCm)
+void moveTray (int power, float distCm = 0)
 {
-	int encVal = distCm / CIRCUM_CM * 360;
-	nMotorEncoder[TRAY] = 0;
-
 	motor[TRAY] = power;
-	nMotorEncoderTarget[TRAY] = encVal;
-	while(nMotorRunState[TRAY] != runStateIdle) { }
-	motor[TRAY] = 0;
+
+	if (distCm > 0) {
+		int encVal = distCm / CIRCUM_CM * 360;
+		nMotorEncoder[TRAY] = 0;
+		nMotorEncoderTarget[TRAY] = encVal;
+		while(nMotorRunState[TRAY] != runStateIdle) { }
+		motor[TRAY] = 0;
+	}
 }
 
 #endif

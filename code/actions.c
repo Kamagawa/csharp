@@ -104,9 +104,9 @@ bool sharpenPencil(int tMs = 3000) {
 }
 
 void alignSharpener(){
-	while(!SensorValue[TRAY_TOUCH]){
-		motor[TRAY] = 50;//change as needed
-	}
+	moveTray(50);//change as needed
+	while(!SensorValue[TRAY_TOUCH]) { }
+	moveTray(0);
 }
 
 bool ejectPencil(){
