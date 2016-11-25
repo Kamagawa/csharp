@@ -39,6 +39,7 @@
 * @since   2016-11-23
 */
 
+//start of preprocessor directives
 #ifndef UTIL_C
 
 #define UTIL_C
@@ -122,8 +123,29 @@ void sort(int *ar, int len, bool ascending = true) {
 	}
 }
 
-// Returns the speed in counts per second for the motor specified by |motor|.
-// Time interval used in speed calculation specified by |tMs|.
+
+/**
+ * getSpeed
+ * {code  float getSpeed(); }
+ *
+ * Description:
+ * Returns the speed in counts per second for the motor specified by |motor|.
+ * Time interval used in speed calculation specified by |tMs|.
+ *
+ * @param motor: parse motor for motorEncoder to detect counts
+ * @param tMs: the interval of wait for speed measuring
+ * @return (float) speed of vehicle in counts / specified interval
+ *			in counts / second * specified interval
+ *
+ * {code
+ *	getSpeed (motor[motorA]); //speed of motorA per 50 seconds, over a 50 ms interval
+ *  getSpeed (motor[motorA], 60); //speed of motorA per minute, over a 60 ms interval
+ * }
+ *
+ * Note:
+ * This is a low level program to suport the action of higher
+ * level program.
+*/
 float getSpeed(tMotor motor, int tMs = 50) {
 	int d1 = nMotorEncoder[motor];
 	wait1Msec(tMs);
@@ -131,10 +153,13 @@ float getSpeed(tMotor motor, int tMs = 50) {
 }
 
 #endif
+//end the preprocessor directives
 
 // Waits for any NXT button to be pressed, then returns that button's number after the button is released.
 // If multiple buttons are pressed simultaneously, the function will return the number of the button which
 // pressed first.
+
+
 int waitForBtnPress() {
 	int btn;
 	while (nNxtButtonPressed == -1){}
