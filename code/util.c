@@ -53,7 +53,15 @@
  * {code  void swap(); }
  *
  * Description:
- * Check that the pencil tray is not removed during sharpening.
+ * swap function  (as taught in class), is a function that takes
+ * in the pointer of two integers and swtich their value. basically
+ *
+ * {code
+ * a = 5;
+ * b = 8;
+ * swap (a, b);
+ * a == 8;
+ * b == 5;
  *
  * Note:
  * This is a higer-levl modular function, that facilitate the
