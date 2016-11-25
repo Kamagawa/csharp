@@ -42,8 +42,8 @@
 #include "util.c"
 #include "ports.c"
 
-const int BATTERY_THRESHOLD = 9000;				//battery level for runtime operation
-const int TRAY_DIST_CM = 30;							//threshold hole level for normal tray to sensorSonar dist
+const int BATTERY_THRESHOLD = 9000;	 //battery level for runtime operation
+const int TRAY_DIST_CM = 30;  //threshold hole level for normal tray to sensorSonar dist
 
 
 /**
