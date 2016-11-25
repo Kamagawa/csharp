@@ -1,3 +1,42 @@
+/**
+* <h1>Main.C</h1>
+* <p>The main.c file is the component of the Csharp program.
+* It contains the task main, which is where the programme
+* will be called by LEGO NXT robot. </p>
+*
+* <p> The function aims to stucture the overall organization of the
+* robot. the main.c calls the following files and
+* contains these variables, and functions: </p>
+*
+* <p><b>Includes: </b>"action.c", "controls.c", "util.c", "ports.c"</p>
+*
+* <p>
+* <b>constant variables:</b>
+* const int BATTERY_THRESHOLD = 9000;
+* const int TRAY_DIST_CM = 30;
+* </p>
+*
+* <p>
+* <b>Funcions</b>
+* monitorTray()
+* sharpenAndSort()
+* task main()
+* </p>
+*
+* <b>Note:</b> The program will only work when all the specified files,
+* function, and variable are present in the package
+*
+* @author
+*		theCsharpGroup:
+*			Eugene Wang
+* 		Feilan Jiang
+*			Kenta Morris
+*			Felix Cheng
+*
+* @version 1.0
+* @since   2016-11-23
+*/
+
 #include "actions.c"
 #include "controls.c"
 #include "util.c"
