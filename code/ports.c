@@ -3,9 +3,9 @@
 * <p>The main.c file is a constant value storage file that is
 * used to keep track of sensor indexes in the robot</p>
 *
-* <p> The function aims to stucture the overall organization of the
-* robot. the main.c calls the following files and
-* contains these variables, and functions: </p>
+* <p> The function aims to organize sensors into a chart for
+* implementation in the program:
+* contains these constants: </p>
 *
 * <p><b>Defines: </b>PORTS_C</p>
 *
