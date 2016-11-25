@@ -61,6 +61,7 @@
 //enum status for functions to return starts datatype
 typedef enum status_t { SUCCESS, JAMMED, TIMED_OUT } Status; 
 
+
 /**
  * monitorTray
  * {code  void promptStart(); }
@@ -245,8 +246,9 @@ Status sharpenPencil(int sharpenDuration = 3000, int timeout = 5000) {
  *		TIMED_OUT: derailed tray
 */
 Status alignSharpener(int timeout = 7000){
-	if (moveTray(50)) {//change as needed
-		long t = time1[T1];
+	if (moveTray(50)) 	//change as needed
+	{
+		long t = time1[T1];	//
 		while(!SensorValue[TRAY_TOUCH] && time1[T1] - t < timeout) { }
 		moveTray(0);
 		return (time1[T1] - t < timeout) ? SUCCESS : TIMED_OUT;
