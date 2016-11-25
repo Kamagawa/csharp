@@ -155,9 +155,29 @@ float getSpeed(tMotor motor, int tMs = 50) {
 #endif
 //end the preprocessor directives
 
-// Waits for any NXT button to be pressed, then returns that button's number after the button is released.
-// If multiple buttons are pressed simultaneously, the function will return the number of the button which
-// pressed first.
+
+
+/**
+ * waitForBtnPress
+ * {code  void waitForBtnPress(); }
+ *
+ * Description:
+ * Waits for any NXT button to be pressed, then returns that button's number after the button is released.
+ * If multiple buttons are pressed simultaneously, the function will return the number of the button which
+ * pressed first.
+ *
+ * @return BTN the pressed button index
+ *
+ * {code
+ *	Button btn = waitForBtnPress();
+ * }
+ *
+ * Note:
+ * This is a low level program to suport the action of higher
+ * level program.
+*/
+
+
 
 
 int waitForBtnPress() {
