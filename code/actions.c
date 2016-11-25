@@ -227,8 +227,23 @@ Status sharpenPencil(int sharpenDuration = 3000, int timeout = 5000) {
 	}
 }
 
-// jammed: object in way
-// time out: derailed tray
+
+/**
+ * alignSharpener
+ * {code  Status alignSharpener(); }
+ *
+ * Description:
+ * This function aligns the sharpener to the slider and feeder port
+ * essentially after the tray was moved to a set location for dropping
+ * the pencil, this function resets the tray and sharpener to its 
+ * initial position
+ * 
+ * @param timesout: time until it returns a timeOut status
+ *
+ * @return status
+ *		JAMMED: object in way
+ *		TIMED_OUT: derailed tray
+*/
 Status alignSharpener(int timeout = 7000){
 	if (moveTray(50)) {//change as needed
 		long t = time1[T1];
