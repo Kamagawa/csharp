@@ -1,5 +1,14 @@
 Functions
 ====
+
+RobotC `Task` functions
+----
+1. `task monitorTray()`
+2. `task sharpenAndSort()`
+3. **only if time** `task pickSortingMethod()`
+4. `task displayInventory()`
+5. `task main()`
+
 "Low-level" hardware functions (all found in `controls.c`)
 ----
 1. `void spinWheels(int power, int ms = -1)`
@@ -14,7 +23,7 @@ Functions
     - Testing:
       - Test with varying distance values and check if the tray stops when out of bounds
       - Test with different motor power levels to see which travels a distance most consistent with encoder readings
-3. `void movePiston(int power, int cm = 0)`
+3. `void moveBelt(int power, int cm = 0)`
     - Assigned to **Eugene**
     - Description: Move conveyor belt at the specified power for the specified distance; moves conveyor belt to full extent by default
     - Testing:
