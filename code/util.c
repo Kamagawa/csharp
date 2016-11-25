@@ -47,6 +47,21 @@
 #define RIGHT_BTN 1
 #define CENTER_BTN 3
 
+
+/**
+ * swap
+ * {code  void swap(); }
+ *
+ * Description:
+ * Check that the pencil tray is not removed during sharpening.
+ *
+ * Note:
+ * This is a higer-levl modular function, that facilitate the
+ * system operation, thus it requires little var from outside
+ * environment as it has been handled in lower-level functions
+ *
+ * @return a void ‘task’ do not return anything.
+*/
 void swap(int * const a, int * const b) {
 	int temp = *a;
 	*a = *b;
