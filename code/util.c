@@ -54,22 +54,23 @@
  *
  * Description:
  * swap function  (as taught in class), is a function that takes
- * in the pointer of two integers and swtich their value. basically
- *
- * {code
- * a = 5;
- * b = 8;
- * swap (a, b);
- * a == 8;
- * b == 5;
+ * in the pointer of two integers and swtich their value.
  *
  * @param a: constant integer pointer a that will be swapped with b
  * @param a: constant integer pointer b that will be swapped with a
+ * @return a void function do not return anything.
  *
- * @return a void task do not return anything.
+ * {code
+ * 	a = 5;
+ * 	b = 8;
+ * 	swap (a, b);
+ * 	a == 8;
+ * 	b == 5;
+ * }
  *
  * Note:
- * This is a low level program which does not
+ * This is a low level program to suport the action of higher
+ * level program.
 */
 void swap(int * const a, int * const b) {
 	int temp = *a;
@@ -77,7 +78,36 @@ void swap(int * const a, int * const b) {
 	*b = temp;
 }
 
-// insertion sort, chosen for small input size
+
+/**
+ * sort
+ * {code  void sort(); }
+ *
+ * Description:
+ * the sort function takes in an integer array from defined size,
+ * and sort it either in ascending or descending order depending
+ * on user's specification.
+ *
+ * @param *ar: integer array pointer for the array to be sorted
+ * @param len: integer length
+ * @param ascending: boolean to determine the way of sorting
+ *	  by defualt it is sorted to true (assending)
+ * @return a void function
+ *
+ * {code
+ *	const int arraySize = 7;
+ *  int [arraySize]array = {...}
+ *
+ *	sort(array, arraySize);
+ *  ==or==
+ *	sort (array, arraySize, false);
+ * }
+ *
+ * Note:
+ * This is a low level program to suport the action of higher
+ * level program.
+*/
+
 void sort(int *ar, int len, bool ascending = true) {
 	int i, j, k;
 
