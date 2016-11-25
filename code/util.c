@@ -54,13 +54,13 @@ bool waitForBtnPress(TButtons btn, int timeoutMs = -1) {
 	bool pressed;
 
 	if (timeoutMs == -1) {
-		while (nNxtButtonPressed != btn);
-		while (nNxtButtonPressed == btn);
+		while (nNxtButtonPressed != btn){}
+		while (nNxtButtonPressed == btn){}
 		pressed = true;
 	} else {
 		clearTimer(T1);
-		while (nNxtButtonPressed != btn && time1[T1] < timeoutMs);
-		while (nNxtButtonPressed == btn && time1[T1] < timeoutMs);
+		while (nNxtButtonPressed != btn && time1[T1] < timeoutMs){}
+		while (nNxtButtonPressed == btn && time1[T1] < timeoutMs){}
 		pressed = time1[T1] < timeoutMs;
 	}
 
