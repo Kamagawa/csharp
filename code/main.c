@@ -72,6 +72,8 @@ task monitorTray() {
 			hogCPU();
 			while (SensorValue[ULTRA] > TRAY_DIST_CM) { }
 			releaseCPU();
+
+			eraseDisplay();
 		}
 	}
 }
@@ -96,26 +98,118 @@ task monitorTray() {
 
 task sharpenAndSort() {
 	bool quit = false;
+	bool finishedSharpening = false;
 	int color = 0;
 	int count[N_BINS] = { 0, 0, 0, 0, 0, 0, 0 };
+	Status stat;
 
 	do {
-		waitForBtnPress(3);
-		while (feedPencil()) {
-			alignSharpener();
-			waitForBtnPress(3);
-			color = getPencilColor();
-			count[color]++;
-			waitForBtnPress(3);
-			sharpenPencil();
+		while (!finishedSharpening) {
+			stat = feedPencil();
 
-			for (int i = 0; i < N_BINS; i++) {
-				waitForBtnPress(3);
-				moveTrayToColor(i);
+			if (stat != TIMED_OUT) {
+				color = getPencilColor();
+				count[color]++;
+				if (color == 0) {
+					displayString(0, "Color detection");
+					displayString(1, "failed");
+					displayString(3, "Placing in");
+					displayString(4, "invalid bin");
+					displayString(5, "after sharpening");
+					wait1Msec(1000);
+					eraseDisplay();
+				}
+
+				do {
+					stat = alignSharpener();
+
+					if (stat == JAMMED) {
+						displayString(0, "Possible jam in");
+						displayString(1, "tray motor");
+						displayString(3, "Press C to resume");
+						displayString(4, "operation");
+						waitForBtnPress(CENTER_BTN);
+						eraseDisplay();
+					} else if (stat == TIMED_OUT) {
+						displayString(0, "Possible derailment");
+						displayString(1, "of tray");
+						displayString(3, "Press C to resume");
+						displayString(4, "operation");
+						waitForBtnPress(CENTER_BTN);
+						eraseDisplay();
+					}
+				} while (stat != SUCCESS);
+
+				do {
+					stat = sharpenPencil();
+					if (stat == JAMMED) {
+						displayString(0, "Possible jam in");
+						displayString(1, "cartridge");
+						displayString(3, "Press C to resume");
+						displayString(4, "operation");
+						waitForBtnPress(CENTER_BTN);
+						eraseDisplay();
+					} else if (stat == TIMED_OUT) {
+						spinWheels(-100, 4000);
+
+						if (SensorValue[WHEEL_TOUCH]) {
+							displayString(0, "Pencil possibly");
+							displayString(1, "stuck in");
+							displayString(2, "sharpener");
+							displayString(4, "Press C to resume");
+							displayString(5, "operation");
+							waitForBtnPress(CENTER_BTN);
+							eraseDisplay();
+						}
+					}
+				} while (stat == JAMMED);
+
+				do {
+					stat = moveTrayToColor(color);
+					if (stat == JAMMED) {
+						displayString(0, "Possible jam in");
+						displayString(1, "tray motor");
+						displayString(3, "Press C to resume");
+						displayString(4, "operation");
+						waitForBtnPress(CENTER_BTN);
+						eraseDisplay();
+					} else if (stat == TIMED_OUT) {
+						displayString(0, "Possible derailment");
+						displayString(1, "of tray");
+						displayString(3, "Press C to resume");
+						displayString(4, "operation");
+						waitForBtnPress(CENTER_BTN);
+						eraseDisplay();
+					}
+				} while (stat != SUCCESS);
+
+				do {
+					stat = ejectPencil();
+					if (stat == JAMMED) {
+						displayString(0, "Pencil possibly");
+						displayString(1, "stuck in");
+						displayString(2, "cartridge");
+						displayString(4, "Press C to resume");
+						displayString(5, "operation");
+						waitForBtnPress(CENTER_BTN);
+						eraseDisplay();
+					} else if (stat == TIMED_OUT) {
+						spinWheels(100, 4000);
+
+						if (SensorValue[WHEEL_TOUCH]) {
+							displayString(0, "Pencil possibly");
+							displayString(1, "hanging on");
+							displayString(2, "cartridge");
+							displayString(4, "Press C to resume");
+							displayString(5, "operation");
+							waitForBtnPress(CENTER_BTN);
+							eraseDisplay();
+						}
+					}
+				} while (stat == JAMMED);
+			} else {
+				finishedSharpening = true;
 			}
-	
-			waitForBtnPress(3);
-			ejectPencil();
 		}
 
 		quit = displayEndScreen(count, 0);
@@ -123,13 +217,6 @@ task sharpenAndSort() {
 
 	stopAllTasks();
 }
-
-
-// display menu dialog to let user pick pencil sorting method before sharpening begins
-//task pickSortingMethod() {
-
-//}
-
 
 /**
  * main
