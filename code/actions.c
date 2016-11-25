@@ -255,8 +255,21 @@ Status alignSharpener(int timeout = 7000){
 	}
 }
 
-// jammed: pencil stuck
-// time out: pencil hanging
+
+/**
+ * ejectPencil
+ * {code  Status ejectPencil(); }
+ *
+ * Description:
+ * This function ejects the pencil from the feeder
+ * meanwhile, check for environmental status
+ * 
+ * @param timesout: time until it returns a timeOut status
+ *
+ * @return status
+ *		JAMMED: pencil stuck in feeder
+ *		TIMED_OUT: pencil hanging
+*/
 Status ejectPencil(int timeout = 7000){
 	if (spinWheels(50)){
 		long t = time1[T1];
@@ -276,7 +289,19 @@ Status ejectPencil(int timeout = 7000){
 	}
 }
 
-// 0: invalid color
+
+/**
+ * getPencilColor
+ * {code  Status getPencilColor(int tMs); }
+ *
+ * Description:
+ * This function detect pencils ambiant color, calculate pencils' 
+ * average color and then returns it as the pencils' color
+ * 
+ * @param timesout: time until it returns a timeOut status
+ *
+ * @return color index ( 0 == invalid color) 
+*/
 int getPencilColor(int tMs = 1000) {
 	long t;
 
@@ -297,8 +322,22 @@ int getPencilColor(int tMs = 1000) {
 	return modeColor;
 }
 
-// jammed: object in way
-// time out: derailed tray
+
+/**
+ * moveTrayToColor
+ * {code  Status moveTrayToColor(int color); }
+ *
+ * Description:
+ * This function moves the tray to a certain color at int color.
+ * it allows the pencil to be dropped to the correct location
+ * and return runtime status for error handling on a higher level
+ * 
+ * @param timesout: time until it returns a timeOut status
+ *
+ * @return status
+ *		JAMMED: object in way
+ *		TIMED_OUT: derailed tray
+*/
 Status moveTrayToColor(int color) {
        Status tempStatus = alignSharpener();
        if (tempStatus == SUCCESS){
@@ -309,5 +348,6 @@ Status moveTrayToColor(int color) {
        }
        return tempStatus;
  }
-
+ 
+//end action class definition
 #endif
