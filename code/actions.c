@@ -1,6 +1,46 @@
 /**
+* <h1>actions.c</h1>
+* <p>The controls.c file is the control component of the Csharp program.
+* It contains the handles the control mechanism of the program </p>
 *
+* <p> The function aims handle the control calls and responds within
+* the following files and contains these variables, and functions: </p>
+*
+* <p><b>Includes: </b>ports.c</p>
+*
+* <p>
+* <b>constant variables:</b>
+* {code
+* const float DIAM_CM = 3.7;
+* const float CIRCUM_CM = DIAM_CM * PI;
+* const int ENC_TOL = 1
+* const int N_BINS = 7;
+* const int BIN_DIST = 0;
+* }
+* </p>
+*
+* <p>
+* <b>Funcions</b>
+* monitorTray()
+* sharpenAndSort()
+* task main()
+* </p>
+*
+* <b>Note:</b> The program will only work when all the specified files,
+* function, and variable are present in the package
+*
+* @author
+*		theCsharpGroup:
+*			Eugene Wang
+* 			Feilan Jiang
+*			Kenta Morris
+*			Felix Cheng
+*
+* @version 1.0
+* @since   2016-11-23
 */
+
+
 #ifndef ACTIONS_C
 #define ACTIONS_C
 
