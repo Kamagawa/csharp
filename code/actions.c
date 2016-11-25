@@ -60,10 +60,10 @@ bool displayEndScreen(int *histogram, int colorOrder) {
 	string penColors[N_BINS] = {"invalid", "black: %d", "blue: %d",
 	"green: %d", "yellow: %d", "red: %d", "white: %d", };
 
-	displayString(0, "Pencil inventory:");
+	displayString(0, "L Quit C Shrp R Sort");
 	if (colorOrder == 0){
 		for (int i = 0; i<N_BINS; i++){
-			displayString(i, penColors[i], histogram[i]);
+			displayString(i + 1, penColors[i], histogram[i]);
 		}
 	}
 	else
@@ -91,26 +91,28 @@ bool displayEndScreen(int *histogram, int colorOrder) {
 		}
 
 		for (int i = 0; i <N_BINS; i++){
-			long line = i;
-			displayString (line, penColors[afterOrder[i]], tbSorted[i]);
+			displayString (i + 1, penColors[afterOrder[i]], tbSorted[i]);
 		}
 
 	}
 
 	int a = waitForBtnPress();
 
-	if (a == LEFT_BTN)
+	if (a == LEFT_BTN) {
+		eraseDisplay();
 		return true;
-	else if (a == CENTER_BTN)
+	} else if (a == CENTER_BTN) {
+		eraseDisplay();
 		return false;
-	else if (a == RIGHT_BTN)
+	} else if (a == RIGHT_BTN) {
 		return displayEndScreen(histogram, colorOrder%3);
-	else
+	} else {
 		return displayEndScreen (histogram, colorOrder%3);
+	}
 }
 
 // jammed: pencils stuck in cartridge
-// times out: pencil fallen off belt
+// times out: no more pencils
 Status feedPencil(int timeout = 5000) {
 	// |moveBelt()|: get pencil to wheels
 	// |spinWheels()|: get pencil into sharpening-ready position (i.e. right past touch sensor)
@@ -205,11 +207,10 @@ int getPencilColor(int tMs = 1000) {
 
 // jammed: object in way
 // time out: derailed tray
-
 Status moveTrayToColor(int color) {
        Status tempStatus = alignSharpener();
        if (tempStatus == SUCCESS){
-               if ( moveTray(-50, (color + 1) * BIN_DIST))
+               if (moveTray(50, (color + 1) * BIN_DIST))
                   return SUCCESS;
                else
                  	return JAMMED;

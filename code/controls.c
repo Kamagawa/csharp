@@ -51,7 +51,7 @@
 //define constants
 const float DIAM_CM = 3.7;
 const float CIRCUM_CM = DIAM_CM * PI;
-const int ENC_TOL = 1
+const int ENC_TOL = 1;
 const int N_BINS = 7;
 const int BIN_DIST = 0;
 const int JAM_THRESHOLD = 10;
@@ -105,7 +105,6 @@ void init() {
 bool moveBelt(int power, int tMs = -1) {
 	bool success;
 
-
 	motor[BELT] = power;
 	success = getSpeed(BELT, 10) > JAM_THRESHOLD || power != 0;
 
@@ -146,7 +145,7 @@ bool spinWheels (int power, int tMs = -1)
 {
 	bool success;
 
-	motor[WHEEL] = power;
+	motor[WHEEL] = -power;
 	success = getSpeed(BELT, 10) > JAM_THRESHOLD || power != 0;
 
 	if (tMs > -1 && success) {
