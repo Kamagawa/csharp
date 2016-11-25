@@ -2,19 +2,20 @@
 * <h1>util.c</h1>
 * <p>The util.c file contains the basic components of the program.
 * This includes the sorting algorithm, basic human-mahcine interaction,
-* and basic machine oeration components
+* and basic machine operation components
 * </p>
 *
-* <p> The function aims to stucture the overall organization of the
-* robot. the main.c calls the following files and
+* <p> The function aims to aid the action of the machine, by
 * contains these variables, and functions: </p>
 *
-* <p><b>Includes: </b>"action.c", "controls.c", "util.c", "ports.c"</p>
+* <p><b>Defines </b>"UTIL_C" for main.c
+* and <b>Includes</b>LEFT_BTN, CENTER_BTN, RIGHT_BTN</p>
 *
 * <p>
-* <b>constant variables:</b>
-* const int BATTERY_THRESHOLD = 9000;
-* const int TRAY_DIST_CM = 30;
+* <b>Defined BTN buttons: </b>
+* LEFT_BTN 2
+* RIGHT_BTN 1
+* define CENTER_BTN 3
 * </p>
 *
 * <p>
