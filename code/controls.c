@@ -105,7 +105,6 @@ void init() {
 bool moveBelt(int power, int tMs = -1) {
 	bool success;
 
-
 	motor[BELT] = power;
 	success = getSpeed(BELT, 10) > JAM_THRESHOLD || power != 0;
 
@@ -146,7 +145,7 @@ bool spinWheels (int power, int tMs = -1)
 {
 	bool success;
 
-	motor[WHEEL] = power;
+	motor[WHEEL] = -power;
 	success = getSpeed(BELT, 10) > JAM_THRESHOLD || power != 0;
 
 	if (tMs > -1 && success) {

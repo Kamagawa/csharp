@@ -167,11 +167,10 @@ int getPencilColor(int tMs = 1000) {
 
 // jammed: object in way
 // time out: derailed tray
-
 Status moveTrayToColor(int color) {
        Status tempStatus = alignSharpener();
        if (tempStatus == SUCCESS){
-               if ( moveTray(-50, (color + 1) * BIN_DIST))
+               if (moveTray(50, (color + 1) * BIN_DIST))
                   return SUCCESS;
                else
                  	return JAMMED;
