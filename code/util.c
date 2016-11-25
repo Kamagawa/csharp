@@ -63,12 +63,13 @@
  * a == 8;
  * b == 5;
  *
- * Note:
- * This is a higer-levl modular function, that facilitate the
- * system operation, thus it requires little var from outside
- * environment as it has been handled in lower-level functions
+ * @param a: constant integer pointer a that will be swapped with b
+ * @param a: constant integer pointer b that will be swapped with a
  *
- * @return a void ‘task’ do not return anything.
+ * @return a void task do not return anything.
+ *
+ * Note:
+ * This is a low level program which does not
 */
 void swap(int * const a, int * const b) {
 	int temp = *a;
