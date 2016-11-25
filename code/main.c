@@ -29,7 +29,7 @@
 * @author
 *		theCsharpGroup:
 *			Eugene Wang
-* 		Feilan Jiang
+* 			Feilan Jiang
 *			Kenta Morris
 *			Felix Cheng
 *
@@ -100,12 +100,21 @@ task sharpenAndSort() {
 	int count[N_BINS] = { 0, 0, 0, 0, 0, 0, 0 };
 
 	do {
+		waitForBtnPress(3);
 		while (feedPencil()) {
 			alignSharpener();
+			waitForBtnPress(3);
 			color = getPencilColor();
 			count[color]++;
+			waitForBtnPress(3);
 			sharpenPencil();
-			// moveTrayToColor(color);
+
+			for (int i = 0; i < N_BINS; i++) {
+				waitForBtnPress(3);
+				moveTrayToColor(i);
+			}
+	
+			waitForBtnPress(3);
 			ejectPencil();
 		}
 
