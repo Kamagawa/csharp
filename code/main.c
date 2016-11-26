@@ -13,7 +13,7 @@
 * <p>
 * <b>constant variables:</b>
 * const int BATTERY_THRESHOLD = 9000;
-* const int TRAY_DIST_CM = 30;
+* const int TRAY_DIST_CM = 20;
 * </p>
 *
 * <p>
@@ -42,9 +42,10 @@
 #include "util.c"
 #include "ports.c"
 
-const int BATTERY_THRESHOLD = 9000;	 //battery level for runtime operation
-const int TRAY_DIST_CM = 30;  //threshold hole level for normal tray to sensorSonar dist
-
+const int BATTERY_THRESHOLD = 0;	 //battery level for runtime operation
+const int TRAY_DIST_CM = 20;  //threshold hole level for normal tray to sensorSonar dist
+const int FAIL_TIMEOUT = 5000; // in a failed state, how long robot will wait for
+							   // user input before continuing
 
 /**
  * monitorTray
@@ -58,11 +59,12 @@ const int TRAY_DIST_CM = 30;  //threshold hole level for normal tray to sensorSo
  * system operation, thus it requires little var from outside
  * environment as it has been handled in lower-level functions
  *
- * @return a void ‘task’ do not return anything.
+ * @return a void ?task? do not return anything.
 */
 task monitorTray() {
 	while (nAvgBatteryLevel > BATTERY_THRESHOLD) {
 		if (SensorValue[ULTRA] > TRAY_DIST_CM) {
+			pauseMotors();
 			playSound(soundException);
 			displayString(3, "Tray removed!");
 			displayString(4, "Put back to resume");
@@ -73,6 +75,7 @@ task monitorTray() {
 			while (SensorValue[ULTRA] > TRAY_DIST_CM) { }
 			releaseCPU();
 
+			resumeMotors();
 			eraseDisplay();
 		}
 	}
@@ -107,7 +110,7 @@ task sharpenAndSort() {
 		while (!finishedSharpening) {
 			stat = feedPencil();
 
-			if (stat != TIMED_OUT) {
+			if (stat == SUCCESS) {
 				color = getPencilColor();
 				count[color]++;
 				if (color == 0) {
@@ -216,6 +219,7 @@ task sharpenAndSort() {
 	} while (!quit);
 
 	stopAllTasks();
+	powerOff();
 }
 
 /**

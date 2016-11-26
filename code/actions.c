@@ -76,16 +76,16 @@ bool displayEndScreen(int *histogram, int colorOrder) {
 
 // jammed: pencils stuck in cartridge
 // times out: no more pencils
-Status feedPencil(int timeout = 5000) {
+Status feedPencil(int timeout = 3000) {
 	// |moveBelt()|: get pencil to wheels
 	// |spinWheels()|: get pencil into sharpening-ready position (i.e. right past touch sensor)
-	if (moveBelt(50, 2000) && spinWheels(50)) {
+	if (moveBelt(50, 500) && spinWheels(50)) {
 		long t = time1[T1];
 		while (!SensorValue[WHEEL_TOUCH] && time1[T1] - t < timeout) { }
 
 		if (time1[T1] - t < timeout) {
 			// align pencil body with colour sensor
-			return spinWheels(50, 500) ? SUCCESS : JAMMED;
+			return spinWheels(50, 150) ? SUCCESS : JAMMED;
 		} else {
 			spinWheels(0);
 			return TIMED_OUT;
@@ -115,10 +115,13 @@ Status sharpenPencil(int sharpenDuration = 3000, int timeout = 5000) {
 
 // jammed: object in way
 // time out: derailed tray
-Status alignSharpener(int timeout = 7000){
-	if (moveTray(25)) {
+Status alignSharpener(bool dir = true, int timeout = 3000){
+	if (moveTray(dir ? -25 : 25)) {
 		long t = time1[T1];
-		while(!SensorValue[TRAY_TOUCH] && time1[T1] - t < timeout) { }
+		if (dir) 
+			while(SensorValue[TRAY_TOUCH] && time1[T1] - t < timeout) { }
+		else
+			while(!(SensorValue[TRAY_TOUCH] && time1[T1] - t < timeout)) { }
 		moveTray(0);
 		return (time1[T1] - t < timeout) ? SUCCESS : TIMED_OUT;
 	} else {
@@ -128,8 +131,8 @@ Status alignSharpener(int timeout = 7000){
 
 // jammed: pencil stuck
 // time out: pencil hanging
-Status ejectPencil(int timeout = 7000){
-	if (spinWheels(50)){
+Status ejectPencil(int timeout = 5000){
+	if (spinWheels(100)){
 		long t = time1[T1];
 		// pencil begins behind touch sensor
 		while(!SensorValue[WHEEL_TOUCH] && time1[T1] - t < timeout ){}
@@ -137,11 +140,11 @@ Status ejectPencil(int timeout = 7000){
 		while(SensorValue[WHEEL_TOUCH] && time1[T1] - t < timeout){}
 		// push for an additional number of encoder counts in order to eject pencil
 		nMotorEncoder[WHEEL] = 0;
-		while(nMotorEncoder[WHEEL] < 500 && time1[T1] - t < timeout){}//change as needed
+		while(abs(nMotorEncoder[WHEEL]) < 360 && time1[T1] - t < timeout){}//change as needed
 
 		spinWheels(0);
 
-		return (time1[T1] - t > timeout)? SUCCESS : TIMED_OUT;
+		return (time1[T1] - t < timeout)? SUCCESS : TIMED_OUT;
 	} else {
 		return JAMMED;
 	}
@@ -171,9 +174,9 @@ int getPencilColor(int tMs = 1000) {
 // jammed: object in way
 // time out: derailed tray
 Status moveTrayToColor(int color) {
-       Status tempStatus = alignSharpener();
+       Status tempStatus = alignSharpener(false);
        if (tempStatus == SUCCESS){
-               if (moveTray(25, (color + 1) * BIN_DIST))
+               if (moveTray(25, (color + 1) * BIN_DIST_CM))
                   return SUCCESS;
                else
                  	return JAMMED;
