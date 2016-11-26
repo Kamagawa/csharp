@@ -1,15 +1,8 @@
-<<<<<<< HEAD
-AYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
-Eugene is HERE!!!
-Kenta too ayyy
-
-=======
->>>>>>> dev
 # csharp
 
 what's left
 ---
-- [ ] implement error handling in main.c
+- [x] implement error handling in main.c
 - [ ] test control.c functions individually
 - [ ] test actions.c functions individually
 - [ ] test main.c tasks individually

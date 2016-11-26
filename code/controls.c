@@ -13,9 +13,10 @@
 * {code
 * const float DIAM_CM = 3.7;
 * const float CIRCUM_CM = DIAM_CM * PI;
+
 * const int ENC_TOL = 1
 * const int N_BINS = 7;
-* const int BIN_DIST = 0;
+* const int BIN_DIST_CM = 3.81;
 * }
 * </p>
 *
@@ -51,11 +52,12 @@
 //define constants
 const float DIAM_CM = 3.7;
 const float CIRCUM_CM = DIAM_CM * PI;
-const int ENC_TOL = 1
+const int ENC_TOL = 1;
 const int N_BINS = 7;
-const int BIN_DIST = 0;
-const int JAM_THRESHOLD = 10;
+const float BIN_DIST_CM = 1;
+const int JAM_THRESHOLD = 100;
 
+static int motorCache[3] = { 0, 0, 0 };
 
 /**
  * init
@@ -105,9 +107,8 @@ void init() {
 bool moveBelt(int power, int tMs = -1) {
 	bool success;
 
-
 	motor[BELT] = power;
-	success = getSpeed(BELT, 10) > JAM_THRESHOLD || power != 0;
+	success = power != 0 || getSpeed(BELT, 10) < JAM_THRESHOLD;
 
 	if (tMs > -1 && success) {
 		long t = time1[T1];
@@ -146,8 +147,8 @@ bool spinWheels (int power, int tMs = -1)
 {
 	bool success;
 
-	motor[WHEEL] = power;
-	success = getSpeed(BELT, 10) > JAM_THRESHOLD || power != 0;
+	motor[WHEEL] = -power;
+	success = power != 0 || getSpeed(BELT, 10) < JAM_THRESHOLD;
 
 	if (tMs > -1 && success) {
 		long t = time1[T1];
@@ -187,20 +188,33 @@ bool moveTray (int power, float distCm = 0)
 {
 	bool success;
 
-	motor[TRAY] = power;
-	success = getSpeed(BELT, 10) > JAM_THRESHOLD || power != 0;
-
-	if (distCm > 0 && success) {
+	motor[TRAY] = -power;
+//	success = power != 0 || getSpeed(BELT, 10) < JAM_THRESHOLD;
+//
+//	if (distCm > 0 && success) {
 		int encVal = distCm / CIRCUM_CM * 360;
 		nMotorEncoder[TRAY] = 0;
-		nMotorEncoderTarget[TRAY] = encVal;
-		while(nMotorRunState[TRAY] != runStateIdle) { }
+//		nMotorEncoderTarget[TRAY] = encVal;
+		while(abs(nMotorEncoder[TRAY]) < encVal) { }
 		motor[TRAY] = 0;
-	} else if (!success) {
-		motor[TRAY] = 0;
-	}
+//	} else if (!success) {
+//		motor[TRAY] = 0;
+//	}
 
-	return success;
+	return true;
+}
+
+void pauseMotors() {
+	motorCache[0] = motor[BELT];
+	motorCache[1] = motor[WHEEL];
+	motorCache[2] = motor[TRAY];
+	motor[BELT] = motor[WHEEL] = motor[TRAY] = 0;
+}
+
+void resumeMotors() {
+	motor[BELT] = motorCache[0];
+	motor[WHEEL] = motorCache[1];
+	motor[TRAY] = motorCache[2];
 }
 
 #endif
