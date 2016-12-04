@@ -80,7 +80,9 @@ bool displayEndScreen(int *histogram, int colorOrder) {
 		} else{
 			sort (tbSorted, N_BINS, false);
 		}
-
+		
+		
+		//assign sorted array to the correct color that each value correspond to
 		for (int x = 0; x < N_BINS; x ++){
 			for (int y = 0; y < N_BINS; y ++){
 				if (tbSorted[x] == histogram[y] && notTaken[x]) {
