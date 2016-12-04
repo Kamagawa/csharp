@@ -1,41 +1,12 @@
-/**
-* <h1>Main.C</h1>
-* <p>The main.c file is the component of the Csharp program.
-* It contains the task main, which is where the programme
-* will be called by LEGO NXT robot. </p>
+/**  main.c
+* stucture csharp's program
+* 
+* constant variables: BATTERY_THRESHOLD, TRAY_DIST_CM *
+* Funcions:  monitorTray(), sharpenAndSort(), task main()
 *
-* <p> The function aims to stucture the overall organization of the
-* robot. the main.c calls the following files and
-* contains these variables, and functions: </p>
-*
-* <p><b>Includes: </b>"action.c", "controls.c", "util.c", "ports.c"</p>
-*
-* <p>
-* <b>constant variables:</b>
-* const int BATTERY_THRESHOLD = 9000;
-* const int TRAY_DIST_CM = 20;
-* </p>
-*
-* <p>
-* <b>Funcions</b>
-* monitorTray()
-* sharpenAndSort()
-* task main()
-* </p>
-*
-* <b>Note:</b> The program will only work when all the specified files,
-* function, and variable are present in the package
-*
-* @author
-*		theCsharpGroup:
-*			Eugene Wang
-* 			Feilan Jiang
-*			Kenta Morris
-*			Felix Cheng
-*
-* @version 1.0
-* @since   2016-11-23
-*/
+* @author: Eugene Wang, Feilan Jiang, Kenta Morris, Felix Cheng
+* @version 1.2
+* @since   2016-11-23 */
 
 #include "actions.c"
 #include "controls.c"
@@ -47,23 +18,15 @@ const int TRAY_DIST_CM = 20;  //threshold hole level for normal tray to sensorSo
 const int FAIL_TIMEOUT = 5000; // in a failed state, how long robot will wait for
 							   // user input before continuing
 
-/**
- * monitorTray
- * {code  task monitorTray(); }
- *
- * Description:
+/**  monitorTray
  * Check that the pencil tray is not removed during sharpening.
- *
- * Note:
- * This is a higer-levl modular function, that facilitate the
- * system operation, thus it requires little var from outside
- * environment as it has been handled in lower-level functions
- *
  * @return a void ?task? do not return anything.
 */
 task monitorTray() {
-	while (nAvgBatteryLevel > BATTERY_THRESHOLD) {
-		if (SensorValue[ULTRA] > TRAY_DIST_CM) {
+	while (nAvgBatteryLevel > BATTERY_THRESHOLD) //have battery
+	{
+		if (SensorValue[ULTRA] > TRAY_DIST_CM) 	//tray out of bound
+		{
 			pauseMotors();
 			playSound(soundException);
 			displayString(3, "Tray removed!");
@@ -72,47 +35,42 @@ task monitorTray() {
 
 			// pause all program execution until tray replaced
 			hogCPU();
-			while (SensorValue[ULTRA] > TRAY_DIST_CM) { }
+			while (SensorValue[ULTRA] > TRAY_DIST_CM) { } 	//continue action when tray out of bound
+			
+			//tray within bound: 
+			
 			releaseCPU();
-
 			resumeMotors();
 			eraseDisplay();
 		}
 	}
 }
-
-
-/**
- * sharpenAndSort
- * {code  task sharpenAndSort(); }
- *
- * Description:
+ 
+/**  sharpenAndSort 
  * the program is the core of the sharpenning and sorting feature
  * it will handle the operation loop that ultimately handles whether
  * the program will transport the pencil, sort, or stops
  *
- * Note:
- * This is a higer-levl modular function, that facilitate the
- * system operation, thus it requires little var from outside
- * environment as it has been handled in lower-level functions
- *
- * @return a void task do not return anything.
-*/
+ * @return a void task do not return anything. */
 
 task sharpenAndSort() {
-	bool quit = false;
-	bool finishedSharpening = false;
-	int color = 0;
-	int count[N_BINS] = { 0, 0, 0, 0, 0, 0, 0 };
-	Status stat;
+	bool quit = false; //user quits
+	bool finishedSharpening = false; 
+	int color = 0;	//current pencil color
+	int count[N_BINS] = { 0, 0, 0, 0, 0, 0, 0 };// color array
+	Status stat;	//status or operation
 
 	do {
-		while (!finishedSharpening) {
-			stat = feedPencil();
+		while (!finishedSharpening) 	//inoperation
+		{
+			stat = feedPencil();	//feedpencil
 
 			if (stat == SUCCESS) {
+				//detect color, and record
 				color = getPencilColor();
-				count[color]++;
+				count[color]++;			
+				
+				//if failed to detect
 				if (color == 0) {
 					displayString(0, "Color detection");
 					displayString(1, "failed");
@@ -124,16 +82,16 @@ task sharpenAndSort() {
 				}
 
 				do {
-					stat = alignSharpener();
+					stat = alignSharpener();	//move sharpener in place
 
-					if (stat == JAMMED) {
+					if (stat == JAMMED) {		//if tray jamed
 						displayString(0, "Possible jam in");
 						displayString(1, "tray motor");
 						displayString(3, "Press C to resume");
 						displayString(4, "operation");
 						waitForBtnPress(CENTER_BTN);
 						eraseDisplay();
-					} else if (stat == TIMED_OUT) {
+					} else if (stat == TIMED_OUT) {	//if time out before reach
 						displayString(0, "Possible derailment");
 						displayString(1, "of tray");
 						displayString(3, "Press C to resume");
@@ -141,10 +99,10 @@ task sharpenAndSort() {
 						waitForBtnPress(CENTER_BTN);
 						eraseDisplay();
 					}
-				} while (stat != SUCCESS);
+				} while (stat != SUCCESS);	//continue util success status is reached
 
 				do {
-					stat = sharpenPencil();
+					stat = sharpenPencil();	//sharpen it
 					if (stat == JAMMED) {
 						displayString(0, "Possible jam in");
 						displayString(1, "cartridge");
@@ -168,7 +126,7 @@ task sharpenAndSort() {
 				} while (stat == JAMMED);
 
 				do {
-					stat = moveTrayToColor(color);
+					stat = moveTrayToColor(color);	//move tray to certain color
 					if (stat == JAMMED) {
 						displayString(0, "Possible jam in");
 						displayString(1, "tray motor");
@@ -187,7 +145,7 @@ task sharpenAndSort() {
 				} while (stat != SUCCESS);
 
 				do {
-					stat = ejectPencil();
+					stat = ejectPencil();		//eject pencil
 					if (stat == JAMMED) {
 						displayString(0, "Pencil possibly");
 						displayString(1, "stuck in");
@@ -211,32 +169,21 @@ task sharpenAndSort() {
 					}
 				} while (stat == JAMMED);
 			} else {
-				finishedSharpening = true;
+				finishedSharpening = true;		//finish one round
 			}
 		}
 
-		quit = displayEndScreen(count, 0);
+		quit = displayEndScreen(count, 0); //display result and prompt for continuation or termination
 	} while (!quit);
 
 	stopAllTasks();
 	powerOff();
 }
 
-/**
- * main
- * {code  task main(); }
- *
- * Description:
+/** main
  * the main task of the program, where all the higher lever functions
  * were called
- *
- * Note:
- * This is a higer-levl modular function, that facilitate the
- * system operation, thus it requires little var from outside
- * environment as it has been handled in lower-level functions
- *
- * @return a void task do not return anything.
-*/
+ * @return a void task do not return anything. */
 task main() {
 	init();
 	promptStart();
