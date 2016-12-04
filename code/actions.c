@@ -1,30 +1,12 @@
-/**
-* <h1>actions.c</h1>
-* <p>The actions.c file is the action component of the Csharp program.
-* It contains the handles the action mechanism of the program </p>
-*
-* <p> The function aims handle the moving pencils, sharpening pencil, 
+/**  actions.c
+* contains the action command of the Csharp program.
+* handle the moving pencils, sharpening pencil, 
 * ejecting pencils, and moving trays. Essentially, the basic component of
 * the machine, it includes these classes, variables, and functions: </p>
 *
-* <p><b>Includes: 
-* #ifndef ACTIONS_C
-* #define ACTIONS_C
-* 
-* #include "controls.c"
-* #include "ports.c"
-* #include "util.c" 
-* </p> 
+* defined Enum "status"
 *
-* <p>
-* <b>defined Enum:</b>
-* {code
-* typedef enum status_t { SUCCESS, JAMMED, TIMED_OUT } Status;
-* }
-* </p>
-*
-* <p>
-* <b>Funcions</b>
+* Declared follow functions: 
 * void promptStart() 
 * bool displayEndScreen(int *histogram, int colorOrder) 
 * Status feedPencil(int timeout = 5000)
@@ -34,22 +16,12 @@
 * Status moveTrayToColor(int color)
 * int getPencilColor(int tMs = 1000)
 * 
-* </p>
-*
 * <b>Note:</b> The program will only work when all the specified files,
 * function, and variable are present in the package
 *
-* @author
-*		theCsharpGroup:
-*			Eugene Wang
-* 			Feilan Jiang
-*			Kenta Morris
-*			Felix Cheng
-*
-* @version 1.0
-* @since   2016-11-23
-*/
-
+* @author: Euene Wang, Feilan Jiang, Kenta Morris, Felix Cheng
+* @version 1.2
+* @since   2016-11-23   */
 
 #ifndef ACTIONS_C
 #define ACTIONS_C
@@ -62,41 +34,24 @@
 typedef enum status_t { SUCCESS, JAMMED, TIMED_OUT } Status; 
 
 
-/**
- * monitorTray
- * {code  void promptStart(); }
- *
- * Description:
+/**  monitorTray
  * display strings, and wait for user button press to start
- * the program
- *
- *
- * @return void: do not return anything.
-*/
+ * the program  */
 void promptStart() {
 	displayString(3, "Press centre btn");
 	displayString(4, "to start");
 	waitForBtnPress(CENTER_BTN);
 }
 
-/**
- * displayEndScreen
- * {code  bool displayEndScreen(); }
- *
- * Description:
+/**  displayEndScreen
  * It handles the display of sorted contain in the program
- * first it display a list of sorted pencil
- * depending on users' requirement, sort the pencils in 
- * different ways: assending, desecnding, and by color index
+ * first it display a list of sorted pencil depending on users' requirement, 
+ * sort the pencils in different ways: assending, desecnding, and by color index
  * 
  * @param histogram int array pointer for the array to be sorted
  * @param colorOrder for the order of which the pencil will be sorted 
- *
- * @return bool: whether or not the programme shall continue
-*/
-bool displayEndScreen(int *histogram, int colorOrder) 
-{
-	
+ * @return bool: whether or not the programme shall continue  */
+bool displayEndScreen(int *histogram, int colorOrder) {
 	//color array
 	string penColors[N_BINS] = {"invalid:%8d" , "black:  %8d", "blue:   %8d",
 	"green:  %8d", "yellow: %8d", "red:    %8d", "white:  %8d" };
@@ -158,19 +113,13 @@ bool displayEndScreen(int *histogram, int colorOrder)
 	}
 }
 
-/**
- * feedPencil
- * {code  Status feedPencil(); }
- *
- * Description:
+/**  feedPencil
  * this function handls spinning wheels to feed the pencil into the sharpener
  * it takes in a parameter times out to determine whether there are more pencils
  * left in the bin
  * 
  * @param timesout: no more pencils
- *
- * @return jammed: pencils stuck in cartridge
-*/
+ * @return jammed: pencils stuck in cartridge   */
 Status feedPencil(int timeout = 3000) 
 {
 	// |moveBelt()|: get pencil to wheels
@@ -192,23 +141,15 @@ Status feedPencil(int timeout = 3000)
 }
 
 
-/**
- * sharpenPencil
- * {code  Status sharpenPencil(); }
- *
- * Description:
- * This function handles the sharpening action of pencils by
- * having the wheels pushing the pencils into the sharpener, as well 
- * as retracting it after it is finished.
+/**  sharpenPencil
+ * spin the wheels to push the pencils into the sharpener and retract it after it is finished.
  * 
  * @param timesout: time until it returns a timeOut status
  * @param sharpenPencil: duration for shapening the pencil
- *
  * @return status
  *		JAMMED: pencils stuck in cartridge
  *		TIMED_OUT: pencils stuck in sharpener
- *		SUCCESS: task completed
-*/
+ *		SUCCESS: task completed                 */
 Status sharpenPencil(int sharpenDuration = 3000, int timeout = 5000) {
 	if (spinWheels(50, 1000)) { // push pencil into sharpener
 		long t;
@@ -225,22 +166,16 @@ Status sharpenPencil(int sharpenDuration = 3000, int timeout = 5000) {
 	}
 }
 
-/**
- * alignSharpener
- * {code  Status alignSharpener(); }
- *
- * Description:
+/**  alignSharpener
  * This function aligns the sharpener to the slider and feeder port
  * essentially after the tray was moved to a set location for dropping
  * the pencil, this function resets the tray and sharpener to its 
  * initial position
  * 
  * @param timesout: time until it returns a timeOut status
- *
  * @return status
  *		JAMMED: object in way
- *		TIMED_OUT: derailed tray
-*/
+ *		TIMED_OUT: derailed tray 	*/
 Status alignSharpener(bool dir = true, int timeout = 3000){
 	if (moveTray(dir ? -25 : 25)) {
 		long t = time1[T1];
@@ -255,20 +190,13 @@ Status alignSharpener(bool dir = true, int timeout = 3000){
 	}
 }
 
-/**
- * ejectPencil
- * {code  Status ejectPencil(); }
- *
- * Description:
- * This function ejects the pencil from the feeder
- * meanwhile, check for environmental status
+/**  ejectPencil
+ * ejects the pencil from the feeder and check for environmental status
  * 
  * @param timesout: time until it returns a timeOut status
- *
  * @return status
  *		JAMMED: pencil stuck in feeder
- *		TIMED_OUT: pencil hanging
-*/
+ *		TIMED_OUT: pencil hanging      */
 Status ejectPencil(int timeout = 5000){
 	if (spinWheels(50)){
 		long t = time1[T1];
@@ -288,19 +216,12 @@ Status ejectPencil(int timeout = 5000){
 	}
 }
 
-
-/**
- * getPencilColor
- * {code  Status getPencilColor(int tMs); }
- *
- * Description:
+/**  getPencilColor
  * This function detect pencils ambiant color, calculate pencils' 
  * average color and then returns it as the pencils' color
  * 
  * @param timesout: time until it returns a timeOut status
- *
- * @return color index ( 0 == invalid color) 
-*/
+ * @return color index ( 0 == invalid color)  */
 int getPencilColor(int tMs = 1000) {
 	long t;
 
@@ -321,18 +242,12 @@ int getPencilColor(int tMs = 1000) {
 	return modeColor;
 }
 
-
-/**
- * moveTrayToColor
- * {code  Status moveTrayToColor(int color); }
- *
- * Description:
+/**  moveTrayToColor
  * This function moves the tray to a certain color at int color.
  * it allows the pencil to be dropped to the correct location
  * and return runtime status for error handling on a higher level
  * 
  * @param timesout: time until it returns a timeOut status
- *
  * @return status
  *		JAMMED: object in way
  *		TIMED_OUT: derailed tray
@@ -347,6 +262,4 @@ Status moveTrayToColor(int color) {
        }
        return tempStatus;
  }
- 
-//end action class definition
 #endif
