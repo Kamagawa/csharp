@@ -13,7 +13,7 @@
  * const int N_BINS = 7;
  * const float BIN_DIST_CM = 1;
  * const int JAM_THRESHOLD = 100;
- 
+
  * Functions:
  * void init()
  * bool moveBelt(int power, int tMs = -1)
