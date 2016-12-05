@@ -77,9 +77,11 @@ float getSpeed(tMotor motor, int tMs = 50) {
 int waitForBtnPress() {
 	int btn;
 
-	while (nNxtButtonPressed == -1) { }
+	while (nNxtButtonPressed == -1) {
+	}
 	btn = nNxtButtonPressed;
-	while (nNxtButtonPressed == btn) { }
+	while (nNxtButtonPressed == btn) {
+	}
 
 	return btn;
 }
@@ -94,13 +96,17 @@ bool waitForBtnPress(int btn, int timeoutMs = -1) {
 	bool pressed;
 
 	if (timeoutMs == -1) {
-		while (nNxtButtonPressed != btn){}
-		while (nNxtButtonPressed == btn){}
+		while (nNxtButtonPressed != btn) {
+		}
+		while (nNxtButtonPressed == btn) {
+		}
 		pressed = true;
 	} else {
 		long t = time1[T1];
-		while (nNxtButtonPressed != btn && time1[T1] - t < timeoutMs){}
-		while (nNxtButtonPressed == btn && time1[T1] - t < timeoutMs){}
+		while (nNxtButtonPressed != btn && time1[T1] - t < timeoutMs) {
+		}
+		while (nNxtButtonPressed == btn && time1[T1] - t < timeoutMs) {
+		}
 		pressed = time1[T1] - t < timeoutMs;
 	}
 

@@ -62,15 +62,16 @@ bool moveBelt(int power, int tMs = -1) {
 
 	motor[BELT] = power;
 
-        // a jam occurs if the motor speed is too low
+	// a jam occurs if the motor speed is too low
 	success = power != 0 || getSpeed(BELT, 10) < JAM_THRESHOLD;
 
-        // if |tMs|'s value is non-default, then stop the motor after |tMs| milliseconds 
+	// if |tMs|'s value is non-default, then stop the motor after |tMs| milliseconds 
 	if (tMs > -1 && success) {
 		long t = time1[T1];
-		while (time1[T1] - t < tMs) { }
+		while (time1[T1] - t < tMs) {
+		}
 		motor[BELT] = 0;
-        // stop motor if there is a jam
+		// stop motor if there is a jam
 	} else if (!success) {
 		motor[BELT] = 0;
 	}
@@ -90,20 +91,21 @@ bool moveBelt(int power, int tMs = -1) {
  * @param power: power level at which to operate the wheels
  * @param tMs: optional duration (in ms) for which to operate the wheels 
  * @return bool: a value of |false| indicates a motor jam */
-bool spinWheels (int power, int tMs = -1){
+bool spinWheels(int power, int tMs = -1) {
 	bool success;
 
 	motor[WHEEL] = -power;
 
-        // a jam occurs if the motor speed is too low
+	// a jam occurs if the motor speed is too low
 	success = power != 0 || getSpeed(BELT, 10) < JAM_THRESHOLD;
 
-        // if |tMs|'s value is non-default, then stop the motor after |tMs| milliseconds 
+	// if |tMs|'s value is non-default, then stop the motor after |tMs| milliseconds 
 	if (tMs > -1 && success) {
 		long t = time1[T1];
-		while (time1[T1] - t < tMs) { }
+		while (time1[T1] - t < tMs) {
+		}
 		motor[WHEEL] = 0;
-        // stop motor if there is a jam
+		// stop motor if there is a jam
 	} else if (!success) {
 		motor[WHEEL] = 0;
 	}
@@ -121,22 +123,22 @@ bool spinWheels (int power, int tMs = -1){
  * @param power: power level at which to operate the tray
  * @param tMs: optional duration (in ms) for which to operate the tray 
  * @return bool: a value of |false| indicates a motor jam */
-bool moveTray (int power, float distCm = 0)
-{
+bool moveTray(int power, float distCm = 0) {
 	bool success;
 
 	motor[TRAY] = -power;
 
-        // a jam occurs if the motor speed is too low
+	// a jam occurs if the motor speed is too low
 	success = power != 0 || getSpeed(BELT, 10) < JAM_THRESHOLD;
 
 	if (distCm > 0 && success) {
 		int encVal = distCm / CIRCUM_CM * 360;
 		nMotorEncoder[TRAY] = 0;
 		nMotorEncoderTarget[TRAY] = encVal;
-		while(abs(nMotorEncoder[TRAY]) < encVal) { }
+		while (abs(nMotorEncoder[TRAY]) < encVal) {
+		}
 		motor[TRAY] = 0;
-        // stop motor if there is a jam
+		// stop motor if there is a jam
 	} else if (!success) {
 		motor[TRAY] = 0;
 	}
