@@ -18,7 +18,7 @@
 
 #ifndef UTIL_C
 #define UTIL_C
-
+//#define statements changed to const variables after demo
 const int LEFT_BTN = 2;
 const int RIGHT_BTN = 1;
 const int CENTER_BTN = 3;
