@@ -88,14 +88,14 @@ task sharpenAndSort() {
 					displayString(1, "tray motor");
 					displayString(3, "Press C to resume");
 					displayString(4, "operation");
-					waitForBtnPress (CENTER_BTN);
+					waitForBtnPress(CENTER_BTN);
 					eraseDisplay();
 				} else if (stat == TIMED_OUT) {
 					displayString(0, "Possible derailment");
 					displayString(1, "of tray");
 					displayString(3, "Press C to resume");
 					displayString(4, "operation");
-					waitForBtnPress (CENTER_BTN);
+					waitForBtnPress(CENTER_BTN);
 					eraseDisplay();
 				}
 
@@ -105,7 +105,7 @@ task sharpenAndSort() {
 					displayString(1, "cartridge");
 					displayString(3, "Press C to resume");
 					displayString(4, "operation");
-					waitForBtnPress (CENTER_BTN);
+					waitForBtnPress(CENTER_BTN);
 					eraseDisplay();
 				} else if (stat == TIMED_OUT) {
 					spinWheels(-100, 4000);
@@ -116,7 +116,7 @@ task sharpenAndSort() {
 						displayString(2, "sharpener");
 						displayString(4, "Press C to resume");
 						displayString(5, "operation");
-						waitForBtnPress (CENTER_BTN);
+						waitForBtnPress(CENTER_BTN);
 						eraseDisplay();
 					}
 				}
@@ -127,14 +127,14 @@ task sharpenAndSort() {
 					displayString(1, "tray motor");
 					displayString(3, "Press C to resume");
 					displayString(4, "operation");
-					waitForBtnPress (CENTER_BTN);
+					waitForBtnPress(CENTER_BTN);
 					eraseDisplay();
 				} else if (stat == TIMED_OUT) {
 					displayString(0, "Possible derailment");
 					displayString(1, "of tray");
 					displayString(3, "Press C to resume");
 					displayString(4, "operation");
-					waitForBtnPress (CENTER_BTN);
+					waitForBtnPress(CENTER_BTN);
 					eraseDisplay();
 				}
 
@@ -145,7 +145,7 @@ task sharpenAndSort() {
 					displayString(2, "cartridge");
 					displayString(4, "Press C to resume");
 					displayString(5, "operation");
-					waitForBtnPress (CENTER_BTN);
+					waitForBtnPress(CENTER_BTN);
 					eraseDisplay();
 				} else if (stat == TIMED_OUT) {
 					spinWheels(100, 4000);
@@ -156,7 +156,7 @@ task sharpenAndSort() {
 						displayString(2, "cartridge");
 						displayString(4, "Press C to resume");
 						displayString(5, "operation");
-						waitForBtnPress (CENTER_BTN);
+						waitForBtnPress(CENTER_BTN);
 						eraseDisplay();
 					}
 				}
