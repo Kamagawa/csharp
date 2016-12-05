@@ -124,6 +124,11 @@ Status feedPencil(int timeout = 3000)
 	// |moveBelt()|: move pencil to wheels
 	// |spinWheels()|: move pencil to sharpening-ready position (i.e. right past touch sensor)
 	if (moveBelt(50, 500) && spinWheels(50)) {
+                // A time variable is used instead of calling |ClearTimer()| because
+                // doing so would interfere with other functions also using
+                // |T1|. Assigning a different timer to each function was unforunately no
+                // an option because it's unknown how many timers are needed at a single 
+                // point in time.
 		long t = time1[T1];
 		while (!SensorValue[WHEEL_TOUCH] && time1[T1] - t < timeout) { }
 
@@ -152,6 +157,11 @@ Status feedPencil(int timeout = 3000)
  *     TIMED_OUT: pencil is stuck in sharpener hole */
 Status sharpenPencil(int sharpenDuration = 3000, int timeout = 5000) {
 	if (spinWheels(50, 1000)) { // push pencil into sharpener hole
+                // A time variable is used instead of calling |ClearTimer()| because
+                // doing so would interfere with other functions also using
+                // |T1|. Assigning a different timer to each function was unforunately no
+                // an option because it's unknown how many timers are needed at a single 
+                // point in time.
 		long t;
 		spinWheels(25, sharpenDuration); // wait for pencil to be sharpened
 
@@ -180,6 +190,11 @@ Status sharpenPencil(int sharpenDuration = 3000, int timeout = 5000) {
  *     TIMED_OUT: tray derailment */
 Status alignSharpener(bool travel = true, int timeout = 3000) {
 	if (moveTray(travel ? -25 : 25)) {
+                // A time variable is used instead of calling |ClearTimer()| because
+                // doing so would interfere with other functions also using
+                // |T1|. Assigning a different timer to each function was unforunately no
+                // an option because it's unknown how many timers are needed at a single 
+                // point in time.
 		long t = time1[T1];
 		if (travel) { 
 			while (SensorValue[TRAY_TOUCH] && time1[T1] - t < timeout) { }
@@ -206,6 +221,11 @@ Status alignSharpener(bool travel = true, int timeout = 3000) {
  *     TIMED_OUT: pencil is dangling in the exit hole */
 Status ejectPencil(int timeout = 5000) {
 	if (spinWheels(50)) {
+                // A time variable is used instead of calling |ClearTimer()| because
+                // doing so would interfere with other functions also using
+                // |T1|. Assigning a different timer to each function was unforunately no
+                // an option because it's unknown how many timers are needed at a single 
+                // point in time.
 		long t = time1[T1];
 		// pencil begins behind touch sensor
 		while(!SensorValue[WHEEL_TOUCH] && time1[T1] - t < timeout ) { }
@@ -256,6 +276,11 @@ Status moveTrayToColor(int color) {
  * @param samplingDuration: the duration (in ms) for which to obtain colour samples
  * @return int: the mode colour value obtained from the samples */
 int getPencilColor(int samplingDuration = 1000) {
+        // A time variable is used instead of calling |ClearTimer()| because
+        // doing so would interfere with other functions also using
+        // |T1|. Assigning a different timer to each function was unforunately no
+        // an option because it's unknown how many timers are needed at a single 
+        // point in time.
 	long t;
 
 	t = time1[T1];
