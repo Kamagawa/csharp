@@ -14,9 +14,7 @@
  * bool waitForBtnPress(int btn, int timeoutMs = -1)
  * monitorTray()
  * sharpenAndSort()
- * task main()
- * 
- * @author: Eugene Wang, Feilan Jiang, Kenta Morris, Felix Cheng */
+ * task main() */
 
 #ifndef UTIL_C
 #define UTIL_C

@@ -1,7 +1,5 @@
 /** ports.c
- * This file contains named constants for the NXT's ports.
- *
- * @author: Eugene Wang, Feilan Jiang, Kenta Morris, Felix Cheng */
+ * This file contains named constants for the NXT's ports. */
 
 #ifndef PORTS_C
 #define PORTS_C

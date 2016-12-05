@@ -20,9 +20,7 @@
  * bool spinWheels (int power, int tMs = -1)
  * bool moveTray (int power, float distCm = 0)
  * void pauseMotors()
- * void resumeMotors()
- *
- * @author: Eugene Wang, Feilan Jiang, Kenta Morris, Felix Cheng */
+ * void resumeMotors() */
 
 #ifndef CONTROLS_C
 #define CONTROLS_C

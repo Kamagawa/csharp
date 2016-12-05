@@ -11,9 +11,7 @@
  * Tasks:
  * task monitorTray()
  * task sharpenAndSort()
- * task main()
- *
- * @author: Eugene Wang, Feilan Jiang, Kenta Morris, Felix Cheng */
+ * task main() */
 
 #include "actions.c"
 #include "controls.c"
