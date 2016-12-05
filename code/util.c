@@ -19,9 +19,9 @@
 #ifndef UTIL_C
 #define UTIL_C
 
-#define LEFT_BTN 2
-#define RIGHT_BTN 1
-#define CENTER_BTN 3
+const int LEFT_BTN = 2;
+const int RIGHT_BTN = 1;
+const int CENTER_BTN = 3;
 
 /** swap
  * Switches the values of two integers. Used extensively by |sort()|.
