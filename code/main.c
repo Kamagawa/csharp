@@ -6,7 +6,6 @@
  * Constants:
  * const int BATTERY_THRESHOLD = 4000;
  * const int TRAY_DIST_CM = 20;
- * const int FAIL_TIMEOUT = 5000;
  * 
  * Tasks:
  * task monitorTray()
@@ -20,8 +19,6 @@
 
 const int BATTERY_THRESHOLD = 4000; // mininum battery level (in mV) for runtime operation
 const int TRAY_DIST_CM = 20; // distance between each colour bin
-const int FAIL_TIMEOUT = 5000; // in a failed state, how long the robot will wait for
-// user input before continuing
 
 /** monitorTray - written by Feilan Jiang
  * Check that the pencil tray is not removed during sharpening. If the tray is removed,

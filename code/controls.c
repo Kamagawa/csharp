@@ -9,7 +9,6 @@
  * Constants:
  * const float DIAM_CM = 3.7;
  * const float CIRCUM_CM = DIAM_CM * PI;
- * const int ENC_TOL = 1;
  * const int N_BINS = 7;
  * const float BIN_DIST_CM = 1;
  * const int JAM_THRESHOLD = 100;
@@ -30,7 +29,6 @@
 
 const float DIAM_CM = 3.7;
 const float CIRCUM_CM = DIAM_CM * PI;
-const int ENC_TOL = 1;
 const int N_BINS = 7;
 const float BIN_DIST_CM = 1;
 const int JAM_THRESHOLD = 100;
