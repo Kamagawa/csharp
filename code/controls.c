@@ -1,12 +1,28 @@
 /** controls.c 
-* handles the control calls and responds within the program
-*
-* const:   DIAM_CM, CIRCUM_CM, ENC_TOL, N_BINS, BIN_DIST_CM
-* Funcions: monitorTray(), sharpenAndSort(), task main()
-*
-* @author: Eugene Wang, Feilan Jiang, Kenta Morris, Felix Cheng
-* @version 1.2
-* @since   2016-11-23  */
+ * The functions in this file are used to operate the robot's subsystems, of which
+ * there are three:
+ * - Wheels: located behind the cartridge exit hole; feeds, retracts, and ejects pencils
+ * - Belt: located beneath the cartridge; feeds pencils to the wheel subsystem
+ * - Tray: located in front of the cartridge; aligns the cartridge exit hole with
+ *         the sharpener hole or appropriate colour bin
+ *
+ * Constants:
+ * const float DIAM_CM = 3.7;
+ * const float CIRCUM_CM = DIAM_CM * PI;
+ * const int ENC_TOL = 1;
+ * const int N_BINS = 7;
+ * const float BIN_DIST_CM = 1;
+ * const int JAM_THRESHOLD = 100;
+ 
+ * Functions:
+ * void init()
+ * bool moveBelt(int power, int tMs = -1)
+ * bool spinWheels (int power, int tMs = -1)
+ * bool moveTray (int power, float distCm = 0)
+ * void pauseMotors()
+ * void resumeMotors()
+ *
+ * @author: Eugene Wang, Feilan Jiang, Kenta Morris, Felix Cheng */
 
 #ifndef CONTROLS_C
 #define CONTROLS_C
@@ -23,10 +39,8 @@ const int JAM_THRESHOLD = 100;
 
 static int motorCache[3] = { 0, 0, 0 };
 
-/**  init
- * the init function initiates the sensor values, and set
- * the correct ports to sensor, hence starting the function
- * of the program and will be called by taks main ();   */
+/** init
+ * Initializes all sensors to be used by setting the |SensorType| of each port. */
 void init() {
 	SensorType[WHEEL_TOUCH] = sensorTouch;
 	SensorType[COLOR] = sensorColorNxtFULL;
@@ -34,80 +48,108 @@ void init() {
 	SensorType[TRAY_TOUCH] = sensorTouch;
 }
 
-/**  moveBelt 
- * moves the belt with the givern power and time tMs, if not specified it will keep
- * moving at setted power. This is to send the pencils to the feeder.
+/** moveBelt 
+ * Moves the belt at the given power. Optionally, the motors can be set to run for a 
+ * duration determined by the value of |tMs|. By default, the belt will continue to
+ * move until stopped programmatically by a future call to |moveBelt()|. This function
+ * is used in actions.c to move the pencil towards the cartridge exit hole.
  *
- * @param power thePower of motor moving the belt
- * @param tMs the time length in milisenconds that the belt will move
- * @return a bool that indicates if task has been done    */
+ * A return value of |false| indicates a motor jam.
+ *
+ * @param power: power level at which to operate the belt
+ * @param tMs: optional duration (in ms) for which to operate the belt 
+ * @return bool: a value of |false| indicates a motor jam */
 bool moveBelt(int power, int tMs = -1) {
 	bool success;
 
 	motor[BELT] = power;
+
+        // a jam occurs if the motor speed is too low
 	success = power != 0 || getSpeed(BELT, 10) < JAM_THRESHOLD;
 
+        // if |tMs|'s value is non-default, then stop the motor after |tMs| milliseconds 
 	if (tMs > -1 && success) {
 		long t = time1[T1];
 		while (time1[T1] - t < tMs) { }
 		motor[BELT] = 0;
+        // stop motor if there is a jam
 	} else if (!success) {
 		motor[BELT] = 0;
 	}
+
 	return success;
 }
 
-
-/**  spinWheels
- * The spinWheels function spins the wheel with MotorPower power
- * and the amout of time tMs, if not specified it will keep
- * moving at setted power. This is to feed the pencil to the pencil sharpener
+/** spinWheels 
+ * Spins the wheels at the given power. Optionally, the motors can be set to run for a 
+ * duration determined by the value of |tMs|. By default, the wheels will continue to
+ * spin until stopped programmatically by a future call to |spinWheels()|. This function
+ * is used in actions.c to feed pencils into the sharpener and eject them into the colour
+ * bins.
  *
- * @param power thePower of motor moving the belt
- * @param tMs the time length in milisenconds that the belt will move
- * @return a bool to indicate if task has been done  */
+ * A return value of |false| indicates a motor jam.
+ *
+ * @param power: power level at which to operate the wheels
+ * @param tMs: optional duration (in ms) for which to operate the wheels 
+ * @return bool: a value of |false| indicates a motor jam */
 bool spinWheels (int power, int tMs = -1){
 	bool success;
+
 	motor[WHEEL] = -power;
+
+        // a jam occurs if the motor speed is too low
 	success = power != 0 || getSpeed(BELT, 10) < JAM_THRESHOLD;
 
+        // if |tMs|'s value is non-default, then stop the motor after |tMs| milliseconds 
 	if (tMs > -1 && success) {
 		long t = time1[T1];
 		while (time1[T1] - t < tMs) { }
 		motor[WHEEL] = 0;
+        // stop motor if there is a jam
 	} else if (!success) {
 		motor[WHEEL] = 0;
 	}
 	return success;
 }
 
-/**  moveTray
- * The moveTray function moves the tray with MotorPower power
- * and the distance in distCm which will be coverted into timing
- * for robot to calculate.
- * This is to feed the pencil to the pencil sharpener
+/** spinWheels 
+ * Moves the tray at the given power. Optionally, the tray can be set to move for a 
+ * distance specified by the value of |distCm|. This function
+ * is used in actions.c to align the correct part of the tray with the cartridge
+ * exit hole.
+ * 
+ * A return value of |false| indicates a motor jam.
  *
- * @param power thePower of motor moving the belt
- * @param distCm the time length in milisenconds that the belt will move
- * @return a bool that indicates if task has been done.  */
+ * @param power: power level at which to operate the tray
+ * @param tMs: optional duration (in ms) for which to operate the tray 
+ * @return bool: a value of |false| indicates a motor jam */
 bool moveTray (int power, float distCm = 0)
 {
 	bool success;
+
 	motor[TRAY] = -power;
-//	success = power != 0 || getSpeed(BELT, 10) < JAM_THRESHOLD;
-//	if (distCm > 0 && success) {
+
+        // a jam occurs if the motor speed is too low
+	success = power != 0 || getSpeed(BELT, 10) < JAM_THRESHOLD;
+
+	if (distCm > 0 && success) {
 		int encVal = distCm / CIRCUM_CM * 360;
 		nMotorEncoder[TRAY] = 0;
-//		nMotorEncoderTarget[TRAY] = encVal;
+		nMotorEncoderTarget[TRAY] = encVal;
 		while(abs(nMotorEncoder[TRAY]) < encVal) { }
 		motor[TRAY] = 0;
-//	} else if (!success) {
-//		motor[TRAY] = 0;
-//	}
+        // stop motor if there is a jam
+	} else if (!success) {
+		motor[TRAY] = 0;
+	}
+
 	return true;
 }
 
-//pause the motor
+/**
+ * Stops all motors and records their power values. This function is used
+ * to disable the robot if the task |monitorTray()| (in main.c) detects a tray
+ * removal. */
 void pauseMotors() {
 	motorCache[0] = motor[BELT];
 	motorCache[1] = motor[WHEEL];
@@ -115,10 +157,14 @@ void pauseMotors() {
 	motor[BELT] = motor[WHEEL] = motor[TRAY] = 0;
 }
 
-//resume the motor
+/**
+ * Sets the disabled motors to their power values prior to being disabled. This function 
+ * is used to re-enable the robot in the task |monitorTray()| (in main.c) when the tray 
+ * is restored. */
 void resumeMotors() {
 	motor[BELT] = motorCache[0];
 	motor[WHEEL] = motorCache[1];
 	motor[TRAY] = motorCache[2];
 }
+
 #endif
