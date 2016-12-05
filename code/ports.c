@@ -1,8 +1,8 @@
-/**  ports.c
-* store constant value to keep track of sensor indice in the robot</p>
-* @author: Eugene Wang, Feilan Jiang, Kenta Morris, Felix Cheng
-* @version 1.0
-* @since   2016-11-23 */
+/** ports.c
+ * This file contains named constants for the NXT's ports.
+ *
+ * @author: Eugene Wang, Feilan Jiang, Kenta Morris, Felix Cheng */
+
 #ifndef PORTS_C
 #define PORTS_C
 
