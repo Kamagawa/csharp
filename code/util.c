@@ -23,7 +23,7 @@ const int LEFT_BTN = 2;
 const int RIGHT_BTN = 1;
 const int CENTER_BTN = 3;
 
-/** swap
+/** swap - written by Feilan Jiang
  * Switches the values of two integers. Used extensively by |sort()|.
  *
  * @param a: first integer 
@@ -34,7 +34,7 @@ void swap(int * const a, int * const b) {
 	*b = temp;
 }
 
-/** sort
+/** sort - written by Feilan Jiang
  * Sorts an array of integers in ascending or desending order. Insertion sort was chosen
  * because of its simplicity and good performance for small input sizes.
  *
@@ -55,7 +55,7 @@ void sort(int *ar, int len, bool ascending = true) {
 	}
 }
 
-/** getSpeed
+/** getSpeed - written by Feilan Jiang
  * Returns the speed in counts per second for the motor specified by |motor|.
  * Time interval used in speed calculation specified by |tMs|.
  *
@@ -68,7 +68,7 @@ float getSpeed(tMotor motor, int tMs = 50) {
 	return (nMotorEncoder[motor] - d1) / (float) tMs * 1000;
 }
 
-/** waitForBtnPress
+/** waitForBtnPress - written by Feilan Jiang
  * Waits for any NXT button to be pressed, then returns that button's number after the button is released.
  * If multiple buttons are pressed simultaneously, the function will return the number of
  * the button which was pressed first.
@@ -86,7 +86,7 @@ int waitForBtnPress() {
 	return btn;
 }
 
-/** waitForBtnPress
+/** waitForBtnPress - written by Feilan Jiang
  * Waits for a specific NXT button to be pressed, with an option for a timeout if the press never occurs.
  * By default, there is no timeout and the function will wait indefinitely for the button to be pressed.
  * If this timeout expires, or if there is no timeout, the function will return |true|.

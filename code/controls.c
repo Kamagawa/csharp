@@ -37,7 +37,7 @@ const int JAM_THRESHOLD = 100;
 
 static int motorCache[3] = { 0, 0, 0 };
 
-/** init
+/** init - written by Feilan Jiang
  * Initializes all sensors to be used by setting the |SensorType| of each port. */
 void init() {
 	SensorType[WHEEL_TOUCH] = sensorTouch;
@@ -46,7 +46,7 @@ void init() {
 	SensorType[TRAY_TOUCH] = sensorTouch;
 }
 
-/** moveBelt 
+/** moveBelt - written by Eugene Wang 
  * Moves the belt at the given power. Optionally, the motors can be set to run for a 
  * duration determined by the value of |tMs|. By default, the belt will continue to
  * move until stopped programmatically by a future call to |moveBelt()|. This function
@@ -79,7 +79,7 @@ bool moveBelt(int power, int tMs = -1) {
 	return success;
 }
 
-/** spinWheels 
+/** spinWheels - written by Felix Cheng
  * Spins the wheels at the given power. Optionally, the motors can be set to run for a 
  * duration determined by the value of |tMs|. By default, the wheels will continue to
  * spin until stopped programmatically by a future call to |spinWheels()|. This function
@@ -112,7 +112,7 @@ bool spinWheels(int power, int tMs = -1) {
 	return success;
 }
 
-/** spinWheels 
+/** moveTray - written by Felix Cheng 
  * Moves the tray at the given power. Optionally, the tray can be set to move for a 
  * distance specified by the value of |distCm|. This function
  * is used in actions.c to align the correct part of the tray with the cartridge
@@ -146,7 +146,7 @@ bool moveTray(int power, float distCm = 0) {
 	return true;
 }
 
-/**
+/** pauseMotors - written by Feilan Jiang
  * Stops all motors and records their power values. This function is used
  * to disable the robot if the task |monitorTray()| (in main.c) detects a tray
  * removal. */
@@ -157,7 +157,7 @@ void pauseMotors() {
 	motor[BELT] = motor[WHEEL] = motor[TRAY] = 0;
 }
 
-/**
+/** resumeMotors - written by Feilan Jiang
  * Sets the disabled motors to their power values prior to being disabled. This function 
  * is used to re-enable the robot in the task |monitorTray()| (in main.c) when the tray 
  * is restored. */

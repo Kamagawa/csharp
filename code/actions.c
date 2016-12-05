@@ -28,7 +28,7 @@ typedef enum status_t {
 	SUCCESS, JAMMED, TIMED_OUT
 } Status;
 
-/** monitorTray
+/** promptStart - written by Feilan Jiang
  * 
  * Prompts user to press the start button, after which the sharpening of pencils will begin. */
 void promptStart() {
@@ -37,7 +37,7 @@ void promptStart() {
 	waitForBtnPress (CENTER_BTN);
 }
 
-/** displayEndScreen
+/** displayEndScreen - written by Eugene Wang
  * Displays a inventory list of sharpened pencils which are categorized by colour.
  * Users are able to cycle through the following list sort orders:
  * - Ascending order with respect to pencil count
@@ -107,7 +107,7 @@ bool displayEndScreen(int *histogram, int colorOrder) {
 	}
 }
 
-/** feedPencil
+/** feedPencil - written by Feilan Jiang
  * This function uses the wheels to feed the pencil into the cartridge exit hole.
  * The function exits when |timeout| is exceeded or when the exit hole touch sensor
  * is pressed, whichever happens first.
@@ -144,7 +144,7 @@ Status feedPencil(int timeout = 3000) {
 	}
 }
 
-/** sharpenPencil
+/** sharpenPencil - written by Feilan Jiang
  * Feed the pencil into the sharpener hole and retract it after |sharpenDuration| is exceeded. 
  * A |Status| value is returned to indicate the occurrence of errors.
  * 
@@ -177,7 +177,7 @@ Status sharpenPencil(int sharpenDuration = 3000, int timeout = 5000) {
 	}
 }
 
-/** alignSharpener
+/** alignSharpener - written by Feilan Jiang
  * This function aligns the sharpener with the cartridge exit hole.
  * It is used by the program as a way of "zeroing" the sliding tray mechamism.
  * A |Status| value is returned to indicate the occurrence of errors.
@@ -212,7 +212,7 @@ Status alignSharpener(bool travel = true, int timeout = 3000) {
 	}
 }
 
-/** ejectPencil
+/** ejectPencil - written by Feilan Jiang
  * Ejects the pencil from the cartridge.
  * A |Status| value is returned to indicate the occurrence of errors.
  * 
@@ -250,7 +250,7 @@ Status ejectPencil(int timeout = 5000) {
 	}
 }
 
-/** moveTrayToColor
+/** moveTrayToColor - written by Kenta Morris
  * This function moves the tray to the bin that corresponds to the parameter |color|.
  * This is to ensure that the pencil is dropped in the correct bin.
  * A |Status| value is returned to indicate the occurrence of errors.
@@ -275,7 +275,7 @@ Status moveTrayToColor(int color) {
 	return status;
 }
 
-/** getPencilColor
+/** getPencilColor - written by Kenta Morris 
  * This function determines the pencil's colour by obtaining a large sample of readings
  * and returning the mode colour value.
  *
