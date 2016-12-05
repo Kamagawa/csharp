@@ -189,7 +189,8 @@ Status sharpenPencil(int sharpenDuration = 3000, int timeout = 5000) {
  *     SUCCESS: action completed successfully
  *     JAMMED: tray motor is jammed
  *     TIMED_OUT: tray derailment */
-Status alignSharpener(bool travel = true, int timeout = 3000) {
+Status alignSharpener(bool travel = true, int timeout = 3000) { 
+	//variable named changed from “dir” to “travel” to improve naming conventions
 	if (moveTray(travel ? -25 : 25)) {
 		// A time variable is used instead of calling |ClearTimer()| because
 		// doing so would interfere with other functions also using
