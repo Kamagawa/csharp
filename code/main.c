@@ -82,7 +82,7 @@ task sharpenAndSort() {
 					eraseDisplay();
 				}
 				
-				//do while loop deleted after demo as we realized the entire scope
+				//do while loop deleted after demo as it became clear that the entire scope
 				//is within the operation loop
 				stat = alignSharpener();
 				if (stat == JAMMED) {
@@ -101,7 +101,7 @@ task sharpenAndSort() {
 					eraseDisplay();
 				}
 				
-				//do while loop deleted after demo as we realized the entire scope
+				//do while loop deleted after demo as it became clear that the entire scope
 				//is within the operation loop
 				stat = sharpenPencil();
 				if (stat == JAMMED) {
@@ -125,7 +125,7 @@ task sharpenAndSort() {
 					}
 				}
 				
-				//do while loop deleted after demo as we realized the entire scope
+				//do while loop deleted after demo as it became clear that the entire scope
 				//is within the operation loop
 				stat = moveTrayToColor(color);
 				if (stat == JAMMED) {
@@ -144,7 +144,7 @@ task sharpenAndSort() {
 					eraseDisplay();
 				}
 				
-				//do while loop deleted after demo as we realized the entire scope
+				//do while loop deleted after demo as it became clear that the entire scope
 				//is within the operation loop
 				stat = ejectPencil();
 				if (stat == JAMMED) {
