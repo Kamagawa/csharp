@@ -3,8 +3,44 @@
 This report describes the Lego NXT robot built for GENE 121/MTE 100 final project. The robot was designed to sharpen a disordered series of coloured pencils and sort them according to the colour of their graphite tips in order to make use of coloured pencils in art projects more convenient for artists. 
 The purpose of this report is to document the design process of the project and reflect on possible improvements in the design and project management. The sharpening subsystem loads pencils from a jam-proof cartridge onto a pencil feeder, which conveys the pencils into an electric sharpener. After a set period of sharpening time, the pencil is retracted, its colour is detected and the tray aligns the corresponding compartment of the container with the pencil feeder. The pencil is then ejected and the electric sharpener is realigned with the pencil feeder. 
 It is concluded that oversight in the mechanical and software design prevented the robot from completing its objective, and improper project management led to delays that removed time for any significant adjustments. Specifically, the tray was unable to brace the sharpener against the force of pencils ejected by the pencil feeder and the program unexpectedly did not stop the tray at the correct alignment. Many suboptimal trade-offs of mechanical features are also discussed. Recommendations include attaching a supporting wall to the back of the tray, adding more checks for proper hardware operation in the code, and various small mechanical design improvements. 
- 
-# 1	Introduction
+
+# Index
+* [Introduction](#1-introduction)
+    * [Design Problem Definition](#11design-problem-definition) 
+    * [Goals and Objective](#12goals-and-ojective) 
+    *	[Constraints and Criteria](#13constraints-and-criteria) 
+        * [Constraints](#131constraints)  
+        * [Criteria](#132criteria) 
+* [Mechanical Design](#2mechanical-design)  
+    * [Cartridge Design](#21cartridge-design)  
+        * [Reasoning for Design](#211reasoning-for-design) 
+        * [Design Tradeoffs](#212design-tradeoffs) 
+    * [Pencil Feeder Design](#22pencil-feeder-design)  
+        * [Reasoning for Design](#221reasoning-for-design) 
+        * [Design Tradeoffs](#222design-tradeoffs)  
+        * [Extensions](#223extensions)  
+    *	[Tray Design](#23tray-design) 
+        * [Reasoning for Design](#231reasoning-for-design)  
+        * [Design Tradeoffs](#232design-tradeoffs) 
+        * [Extensions](#233extensions)  
+* [Software Design and Implementation](#3software-design-and-implementation)  
+    *	[Testing Overview](#31testing-overview)  
+    *	[Problems Encountered and Resulting Redesign](#32problems-encountered-and-resulting-redesign) 
+    *	[Software Design Tradeoffs](#33software-design-tradeoffs) 
+* [Project Management](#4project-management)  
+    *	[Task Delegation](#41task-delegation)  
+    *	[Project Timeline](#42project-timeline)  
+* [Conclusions and Recommendations](#5conclusions-and-recommendations)  
+    *	[Conclusions](#51conclusions) 
+    *	[Recommendations](#52-recommendations)  
+        * [Mechanical Improvements](#521mechanical-improvements)  
+        * [Software Improvements](#522software-improvements)  
+        * [Project Management Improvements](#523project-management-improvements)  
+* [Reference](#6references)  
+
+
+
+# 1 Introduction 
 ## 1.1	Design Problem Definition
 Using coloured pencils in an advanced art project often requires fine precision for detail and very heavy shading for desired intense hues. Also, since coloured pencils cannot easily mix their colors on paper, artists require a large variety of coloured pencils for different shades. As a result, artists using coloured pencils must frequently interrupt their creative process to sharpen and find the correct coloured pencil out of their large collection.
 ## 1.2	Goals and Objective
@@ -39,7 +75,7 @@ Possible extensions include a method of scanning the colours of all loaded penci
 Figure 2.3 Pencil Feeder Design
 
 The final pencil feeder receives a row of pencils dropped from the cartridge and moves them forward on a conveyor belt. The belt then stops and the tires drag the first pencil in the row to activate a touch sensor. Once the program senses the pencil’s colour, the tires push the pencil into the sharpener and pull it out after an arbitrary time period. Note that the tire system is referred to as “wheel” in the code, and is referenced differently in the report to highlight the mechanical importance of the rubber tires.
-2.2.1	Reasoning for Design 
+### 2.2.1	Reasoning for Design 
 The two-step mechanism of the belt and tires allows the robot to handle the edge case of several short pencils being dropped at once, since the tires only pull the first pencil in the row. Also, since the entire row of pencils shifts forward, longer pencils above the conveyor belt row only partially drop into the back end of the row, which does not affect the pencil feeder (See Figure 2.4). 
 
 ![](docs/img/f_dropsol.png)
@@ -51,17 +87,17 @@ Next, the switch from a conveyor belt to a tire arrangement is necessary for the
 ![](docs/img/f_prevslide.png)
 
 Figure 2.5: Previous Slider Design. Note the long extension at the back of the slider meant to stop long pencils from partially dropping behind it.
-### 2.2.2	Design Trade-offs
+### 2.2.2	Design Tradeoffs
 The trade-offs of this pencil feeder design are that it sacrifices speed and is more prone to assembly errors. Since the feeder cannot detect the length of pencils or if there are even multiple pencils in the row at all, the belt has to move forward for an arbitrary time period before the tires activate. In the robot, this inefficiency of the two-step mechanism results in roughly 1-2 seconds of wasted time per pencil. This design also heavily relies on the cartridge being correctly aligned with the conveyor belt, since the conveyor belt passively accepts pencils dropping from the cartridge instead of actively removing them with a piston or a similar mechanism. Additionally, the conveyor belt and tires need separate motors, which restricts the design of later components. Despite these flaws, this design’s simplicity and ability to easily handle varying lengths of pencils merit its inclusion in our robot.
 ### 2.2.3	Extensions
 Possible extensions of the pencil feeder include creating a mechanism to sense the general sharpness of a pencil before and after sharpening. This could give the program input to estimate the minimum time the tires have to be in “push” mode to sharpen the pencil, and decrease sharpening time accordingly.
-### 2.3	Tray Design
+## 2.3	Tray Design
 
 ![](docs/img/f_totalrails.jpg)
 
 ![](docs/img/f_totalsystem.)
 The pencil tray moves either the sharpener or the container for sorted pencils in front of the pencil feeder tires for the tires to push out the pencil into the sharpener or the correct compartment of the container. The tray moves via a rack and pinion underneath it and calibrates with a touch sensor below it.
-#### 2.3.1	Reasoning for Design
+### 2.3.1	Reasoning for Design
 Combining the pencil sharpener and final container into one moving part allows the design to reuse the ejection mechanism of the tires, eliminating the need for a complex and error-prone ramp systems, which was a previous design idea. This design also made efficient use of resources, since the pencil feeder requires the other two motors. Furthermore, moving the sharpener and container on a tray is more stable than moving the pencil feeder because the tray’s lower centre of gravity and placing the tray perpendicular to the feeder allows for easy access to the container of sorted pencils. The container compartments are tall so as they can accommodate the edge case of all 30 pencils being the same colour. Placing the motor under the weight of the tray helps the rack engage the pinion, and as for the touch sensor location, attaching it below the tray instead of at the ends of the tray’s path prevents the sensor from being dislodged or damaged while transporting the robot.
 ### 2.3.2	Design Tradeoffs
 Since the motor is beneath the tray, the tray is elevated on a platform of Tetrix pieces, which requires the feeder and cartridge to be elevated as well, and compromises the robot’s stability. The rack and pinion is difficult to access in this arrangement as well, so checking and adjusting the contact between the rack and pinion becomes inconvenient. Also, placing the tray perpendicular to the feeder is space-intensive, requiring a large base for the robot which is difficult to transport. Additionally, while the movable tray design allows for a stable stationary pencil feeder, it does not stabilize the sharpener against the force of pencils pushed out by the feeder. Placing the touch sensor below the tray destabilizes it as well, as it must depress the sensor button as it moves forward. As a result, the tray requires a large weight in the container for the robot to be operational. 
