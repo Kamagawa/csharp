@@ -15,35 +15,50 @@ The initial constraints were for the robot to avoid chipping pencils during oper
 The initial criteria were for the robot to handle various pencil sizes, have a jam-proof loading mechanism, be easily moved by one person, allow for easier access to sharpened pencils, sort for criteria besides colour and possess different sorting options. Since the ability to avoid jams and function regardless of pencil size is most important, the design of the cartridge and pencil feeder received the most attention and progressed through three preliminary designs. The final design would preferably be able to handle pencils between 3.5 to 7 inches long without jamming. Easier access to sorted pencils was accomplished by adding a removable container to the tray and the different colour settings of the colour sensor allows for implementation of different sorting options. However, as the complexity of detecting subtle features besides colour, such as graphite density, interfered with the meeting of constraints, this criterion was replaced with a desire for performance speed. Our new criterion is for the robot to sharpen and sort 30 pencils in 10 minutes.
  
 # 2	Mechanical Design
- 
+ ![](docs/img/f_overview.png)
 Figure 2.1: Mechanical Design of the Robot Full View
-2.1	Cartridge Design
+
+## 2.1	Cartridge Design
 The cartridge holds at least 30 pencils for the robot to automatically feed to the sharpening and sorting mechanisms. The user drops horizontally oriented pencils, which stack up in the cartridge before dropping into the pencil feeder.
 ### 2.1.1	Reasoning for Design 
 The tall, narrow shape of the cartridge holds pencils in a single column. As a result, it unloads only one pencil at a time and prevents pencils from jamming via lateral movement (See Figure 2.2).
+
+ ![](docs/img/f_loader.png)
  
 Figure 2.2: Cartridge Design Comparison: The left diagram illustrates the current cartridge design, viewing from the back of the cartridge. Note the ordered pencil stack.  The right diagram illustrates a possible jam situation with a wider cartridge design. Note the disorder allowed by the width of the cartridge.
+
+
 ### 2.1.2	 Design Tradeoffs
 The cartridge’s tall design is unstable due to its high centre of gravity and thus, makes the robot difficult to transport. The height of the cartridge also forces the user to stand up from their work to reload, and the narrow opening requires the pencils to be loaded one at a time, which is inconvenient and time-consuming. However, the design cannot accommodate a funnel for faster pencil loading without further compromising its structural stability. The tall design remains in the final design despite these flaws for its simplicity, reliability and ease of manufacturing to meet the project deadline, which allows for more focus on the main mechanisms.
 ### 2.1.3	Extensions
 Possible extensions include a method of scanning the colours of all loaded pencils before sharpening so they could be sorted according to the maximum and minimum RGB values of the loaded pencils instead of according to default colour readings. Pencils could also be checked for incorrect orientation and flipped around to avoid sharpening the back ends of pencils.
 ## 2.2	Pencil Feeder Design
- 
+
+ ![](docs/img/f_convey.png)
 Figure 2.3 Pencil Feeder Design
+
 The final pencil feeder receives a row of pencils dropped from the cartridge and moves them forward on a conveyor belt. The belt then stops and the tires drag the first pencil in the row to activate a touch sensor. Once the program senses the pencil’s colour, the tires push the pencil into the sharpener and pull it out after an arbitrary time period. Note that the tire system is referred to as “wheel” in the code, and is referenced differently in the report to highlight the mechanical importance of the rubber tires.
 2.2.1	Reasoning for Design 
 The two-step mechanism of the belt and tires allows the robot to handle the edge case of several short pencils being dropped at once, since the tires only pull the first pencil in the row. Also, since the entire row of pencils shifts forward, longer pencils above the conveyor belt row only partially drop into the back end of the row, which does not affect the pencil feeder (See Figure 2.4). 
- 
+
+![](docs/img/f_dropsol.png)
 Figure 2.4: Illustration of Pencil Drop solution. The long pencil partially drops into the back of the row and causes no jams. Note that in a system where the pencil would drop in front of the row, the system would jam
+
 This conveyor belt design eliminates the need for the long rear pencil stopper of previous slider-based designs (See Figure 2.5)
 Next, the switch from a conveyor belt to a tire arrangement is necessary for the robot to firmly grip the pencil. The increased traction as the pencil is squeezed between two tires allows the robot to both push the pencil forcefully enough for the sharpener to activate as well as pull the pencil out when fully sharpened. This tight grip is also necessary for the light pencil to activate the touch sensor. 
  
+![](docs/img/f_prevslide.png)
+
 Figure 2.5: Previous Slider Design. Note the long extension at the back of the slider meant to stop long pencils from partially dropping behind it.
 ### 2.2.2	Design Trade-offs
 The trade-offs of this pencil feeder design are that it sacrifices speed and is more prone to assembly errors. Since the feeder cannot detect the length of pencils or if there are even multiple pencils in the row at all, the belt has to move forward for an arbitrary time period before the tires activate. In the robot, this inefficiency of the two-step mechanism results in roughly 1-2 seconds of wasted time per pencil. This design also heavily relies on the cartridge being correctly aligned with the conveyor belt, since the conveyor belt passively accepts pencils dropping from the cartridge instead of actively removing them with a piston or a similar mechanism. Additionally, the conveyor belt and tires need separate motors, which restricts the design of later components. Despite these flaws, this design’s simplicity and ability to easily handle varying lengths of pencils merit its inclusion in our robot.
 ### 2.2.3	Extensions
 Possible extensions of the pencil feeder include creating a mechanism to sense the general sharpness of a pencil before and after sharpening. This could give the program input to estimate the minimum time the tires have to be in “push” mode to sharpen the pencil, and decrease sharpening time accordingly.
 ### 2.3	Tray Design
+
+![](docs/img/f_totalrails.jpg)
+
+![](docs/img/f_totalsystem.)
 The pencil tray moves either the sharpener or the container for sorted pencils in front of the pencil feeder tires for the tires to push out the pencil into the sharpener or the correct compartment of the container. The tray moves via a rack and pinion underneath it and calibrates with a touch sensor below it.
 #### 2.3.1	Reasoning for Design
 Combining the pencil sharpener and final container into one moving part allows the design to reuse the ejection mechanism of the tires, eliminating the need for a complex and error-prone ramp systems, which was a previous design idea. This design also made efficient use of resources, since the pencil feeder requires the other two motors. Furthermore, moving the sharpener and container on a tray is more stable than moving the pencil feeder because the tray’s lower centre of gravity and placing the tray perpendicular to the feeder allows for easy access to the container of sorted pencils. The container compartments are tall so as they can accommodate the edge case of all 30 pencils being the same colour. Placing the motor under the weight of the tray helps the rack engage the pinion, and as for the touch sensor location, attaching it below the tray instead of at the ends of the tray’s path prevents the sensor from being dislodged or damaged while transporting the robot.
@@ -51,15 +66,17 @@ Combining the pencil sharpener and final container into one moving part allows t
 Since the motor is beneath the tray, the tray is elevated on a platform of Tetrix pieces, which requires the feeder and cartridge to be elevated as well, and compromises the robot’s stability. The rack and pinion is difficult to access in this arrangement as well, so checking and adjusting the contact between the rack and pinion becomes inconvenient. Also, placing the tray perpendicular to the feeder is space-intensive, requiring a large base for the robot which is difficult to transport. Additionally, while the movable tray design allows for a stable stationary pencil feeder, it does not stabilize the sharpener against the force of pencils pushed out by the feeder. Placing the touch sensor below the tray destabilizes it as well, as it must depress the sensor button as it moves forward. As a result, the tray requires a large weight in the container for the robot to be operational. 
 ### 2.3.3	Extensions
 Possible extensions include sensing when a compartment of the container is full. This could enable the program to stop the robot and prompt the user to empty it.
- 
+
+
 # 3	Software Design and Implementation
-The program breaks down the robot’s task into the following functions. First it conveys a pencil from the conveyor belt to the tires, where it triggers a touch sensor. The colour sensor above it then reads the pencil colour and the robot feeds a pencil to the sharpener. Once the pencil is finished sharpening, the robot retracts the pencil, aligns the pencil feeder and the container compartment corresponding to the pencil colour, and ejects the pencil. In order to manage the many steps of this task, the program is broken down into 5 files: ports.c, utils.c, actions.c, and main.c.
+The program breaks down the robot’s task into the following functions. First it conveys a pencil from the conveyor belt to the tires, where it triggers a touch sensor. The colour sensor above it then reads the pencil colour and the robot feeds a pencil to the sharpener. Once the pencil is finished sharpening, the robot retracts the pencil, aligns the pencil feeder and the container compartment corresponding to the pencil colour, and ejects the pencil. In order to manage the many steps of this task, the program is broken down into 5 files: `ports.c`, `utils.c`, `actions.c`, and `main.c`.
 ports.c contains constants representing the correct sensor configuration and the tasks corresponding with each motor and sensor. Each constant is named for the intended function of the motor and sensor and contains the correct port. Using the constants in ports.c provides a unified standard for referring to the sensors and ports elsewhere in the code. 
-utils.c stores algorithmic and miscellaneous functions used in the program. It includes two algorithmic functions. The first is the swap function, which accepts 2 integers, and swaps their place in memory. The second is the sort function, which accepts an array pointer, and sorts it either in ascending or descending order. Miscellaneous functions include the overloaded function waitForBtnPress, which detects if button has been pressed. If called without parameters, int waitForBtnPress() returns the index of the button pressed, while bool waitForBtnPress(int btn, timeoutMS =-1) will indicate whether the specified button has been pressed in the given timeout interval. The functions in this file facilitate calculations and other generic tasks performed in other parts of the program. The file also contains constants that represent the NXT’s buttons. These are used in place of the integer button mappings, which are hard to recall and fail to indicate the buttons that they referred to. 
+utils.c stores algorithmic and miscellaneous functions used in the program. It includes two algorithmic functions. The first is the swap function, which accepts 2 integers, and swaps their place in memory. The second is the sort function, which accepts an array pointer, and sorts it either in ascending or descending order. Miscellaneous functions include the overloaded function waitForBtnPress, which detects if button has been pressed. If called without parameters, int waitForBtnPress() returns the index of the button pressed, while `bool waitForBtnPress(int btn, timeoutMS =-1)` will indicate whether the specified button has been pressed in the given timeout interval. The functions in this file facilitate calculations and other generic tasks performed in other parts of the program. The file also contains constants that represent the NXT’s buttons. These are used in place of the integer button mappings, which are hard to recall and fail to indicate the buttons that they referred to. 
 actions.c is the higher-level component of the program, and stores the functions that represent specific steps in the robot’s task. Such steps include sharpening the pencil, aligning the cartridge with a specific colour bin, and displaying the inventory of sharpened pencils. actions.c replaces repeated motor control code with simple function names, making the code in main.c much easier to understand and follow. 
 The functions in controls.c allow for low level manipulation of the robot’s hardware such as motor control and sensor initialization. Each subsystem (e.g., tray, tires, etc) has its own function to allow for independent control, such as moveBelt, SpinWheels, and moveTray. These functions perform their designated action by facilitating the robot system according to a given motor power value. They also accept an optional timeout or distance value for the motors to be operated for a set time or distance, which allows the accurate timing crucial to the robot’s task. Furthermore, many functions have a boolean return type to return false in response to unexpected dips in motor speed, which could indicate a pencil jam or the user being poked by a pushed pencil. actions.c uses this information to determine any environmental disturbances. 
 The functions are put together and executed in main.c by the high level sharpenAndsort method which prompts user input, executes the sharpening and sorting tasks by calling functions and displaying the final result returned by functions. Meanwhile, monitorTray checks for the tray’s presence during the course of operation and stops the robot if the tray has been removed. The design is summarized briefly in Figure 6.1.
  
+![](docs/img/f_flowchart.jpg)
 Figure 3.1: Main Program Flowchart
 ## 3.1	Testing Overview
 Testing began with the low level hardware control functions in controls.c. Each function was called with and without the timeout parameter to test the program’s ability to accurately control the robot. actions.c was only tested after the functions in controls.c were fully debugged to ensure further issues would only be errors in the tested file. During this stage of testing, the motors were also obstructed to check if the program would automatically stop the robot during a pencil jam. Once actions.c was fully tested and debugged, main.c was also tested for the ability to stop the program when the tray was removed. 
